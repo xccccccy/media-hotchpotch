@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>作业</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    
+    .back-all {
+      background: #ddd;
+      min-height: 100vh;
+      margin: 0;
+      background: url('/image/7.jpg') no-repeat center;
+      background-size: cover;
+      position: relative;
+      z-index: 0;
+    }
+    
+    .back-all:before {
+      content: '';
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      backdrop-filter: blur(60px) brightness(85%);
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class='back-all'>
+    <div>kkk</div>
+  </div>
+  <script>
+    var bGW6Q = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
+      QT4X = {},
+      Fa1x = {};
+    for (var i = 0, l = bGW6Q.length, c; i < l; i++) {
+      c = bGW6Q.charAt(i);
+      QT4X[i] = c;
+      Fa1x[c] = i
+    }
+
+    var cDj9a = function(iA3x) {
+      var r0x = 0,
+        c, o0x = [];
+      while (r0x < iA3x.length) {
+        c = iA3x[r0x];
+        if (c < 128) {
+          o0x.push(String.fromCharCode(c));
+          r0x++
+        } else if (c > 191 && c < 224) {
+          o0x.push(String.fromCharCode((c & 31) << 6 | iA3x[r0x + 1] & 63));
+          r0x += 2
+        } else {
+          o0x.push(String.fromCharCode((c & 15) << 12 | (iA3x[r0x + 1] & 63) << 6 | iA3x[r0x + 2] & 63));
+          r0x += 3
+        }
+      }
+      return o0x.join("")
+    };
+    var cDf9W = function() {
+      var hy3x = /\r\n/g;
+      return function(j0x) {
+        j0x = j0x.replace(hy3x, "\n");
+        var o0x = [],
+          mn4r = String.fromCharCode(237);
+        if (mn4r.charCodeAt(0) < 0)
+          for (var i = 0, l = j0x.length, c; i < l; i++) {
+            c = j0x.charCodeAt(i);
+            c > 0 ? o0x.push(c) : o0x.push(256 + c >> 6 | 192, 256 + c & 63 | 128)
+          }
+        else
+          for (var i = 0, l = j0x.length, c; i < l; i++) {
+            c = j0x.charCodeAt(i);
+            if (c < 128)
+              o0x.push(c);
+            else if (c > 127 && c < 2048)
+              o0x.push(c >> 6 | 192, c & 63 | 128);
+            else
+              o0x.push(c >> 12 | 224, c >> 6 & 63 | 128, c & 63 | 128)
+          }
+        return o0x
+      }
+    }();
+    var Le3x = function(iA3x) {
+      var r0x = 0,
+        o0x = [],
+        fg2x = iA3x.length % 3;
+      if (fg2x == 1)
+        iA3x.push(0, 0);
+      if (fg2x == 2)
+        iA3x.push(0);
+      while (r0x < iA3x.length) {
+        o0x.push(QT4X[iA3x[r0x] >> 2], QT4X[(iA3x[r0x] & 3) << 4 | iA3x[r0x + 1] >> 4], QT4X[(iA3x[r0x + 1] & 15) << 2 | iA3x[r0x + 2] >> 6], QT4X[iA3x[r0x + 2] & 63]);
+        r0x += 3
+      }
+      if (fg2x == 1)
+        o0x[o0x.length - 1] = o0x[o0x.length - 2] = "=";
+      if (fg2x == 2)
+        o0x[o0x.length - 1] = "=";
+      return o0x.join("")
+    };
+    var bIl6f = function() {
+      var rB6v = /\n|\r|=/g;
+      return function(j0x) {
+        var r0x = 0,
+          o0x = [];
+        j0x = j0x.replace(rB6v, "");
+        for (var i = 0, l = j0x.length; i < l; i += 4)
+          o0x.push(Fa1x[j0x.charAt(i)] << 2 | Fa1x[j0x.charAt(i + 1)] >> 4, (Fa1x[j0x.charAt(i + 1)] & 15) << 4 | Fa1x[j0x.charAt(i + 2)] >> 2, (Fa1x[j0x.charAt(i + 2)] & 3) << 6 | Fa1x[j0x.charAt(i + 3)]);
+        var bq0x = o0x.length,
+          fg2x = j0x.length % 4;
+        if (fg2x == 2)
+          o0x = o0x.slice(0, bq0x - 2);
+        if (fg2x == 3)
+          o0x = o0x.slice(0, bq0x - 1);
+        return o0x
+      }
+    }();
+    var cDM9D = function(j0x) {
+      return cDj9a(bIl6f(j0x))
+    };
+    var cDa9R = function(j0x) {
+      var iA3x = bIl6f(j0x),
+        dq1x = iA3x.length,
+        iC3x;
+      var r0x = 0;
+      while (iC3x = iA3x[r0x]) {
+        if (iC3x > 128) {
+          iA3x[r0x] = iC3x - 256
+        }
+        r0x++
+      }
+      return iA3x
+    };
+    var cCZ9Q = function(j0x) {
+      try {
+        return window.btoa(j0x)
+      } catch (ex) {
+        return Le3x(cDf9W(j0x))
+      }
+    }
+
+
+
+    var CQ0x = function(hY3x) {
+      if (hY3x < -128) {
+        return CQ0x(128 - (-128 - hY3x))
+      } else if (hY3x >= -128 && hY3x <= 127) {
+        return hY3x
+      } else if (hY3x > 127) {
+        return CQ0x(-129 + hY3x - 127)
+      } else {
+        throw new Error("1001")
+      }
+    };
+    var cxW8O = function(hY3x, bi0x) {
+      return CQ0x(hY3x + bi0x)
+    };
+    var cxV8N = function(VK6E, bpT2x) {
+      if (VK6E == null) {
+        return null
+      }
+      if (bpT2x == null) {
+        return VK6E
+      }
+      var rd6X = [];
+      var cxU8M = bpT2x.length;
+      for (var i = 0, bq0x = VK6E.length; i < bq0x; i++) {
+        rd6X[i] = cxW8O(VK6E[i], bpT2x[i % cxU8M])
+      }
+      return rd6X
+    };
+    var cxT8L = function(VL6F) {
+      if (VL6F == null) {
+        return VL6F
+      }
+      var rd6X = [];
+      var cxS8K = VL6F.length;
+      for (var i = 0, bq0x = cxS8K; i < bq0x; i++) {
+        rd6X[i] = CQ0x(0 - VL6F[i])
+      }
+      return rd6X
+    };
+    var cxP8H = function(bff9W, Vk6e) {
+      bff9W = CQ0x(bff9W);
+      Vk6e = CQ0x(Vk6e);
+      return CQ0x(bff9W ^ Vk6e)
+    };
+    var bTE0x = function(Vj6d, bqq2x) {
+      if (Vj6d == null || bqq2x == null || Vj6d.length != bqq2x.length) {
+        return Vj6d
+      }
+      var rd6X = [];
+      var cxM8E = Vj6d.length;
+      for (var i = 0, bq0x = cxM8E; i < bq0x; i++) {
+        rd6X[i] = cxP8H(Vj6d[i], bqq2x[i])
+      }
+      return rd6X
+    };
+    var bTS0x = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
+    var cxL8D = function(dv1x) {
+      var MG3x = [];
+      MG3x.push(bTS0x[dv1x >>> 4 & 15]);
+      MG3x.push(bTS0x[dv1x & 15]);
+      return MG3x.join("")
+    };
+    var bTX1x = function(ue8W) {
+      var bq0x = ue8W.length;
+      if (ue8W == null || bq0x < 0) {
+        return new String("")
+      }
+      var MG3x = [];
+      for (var i = 0; i < bq0x; i++) {
+        MG3x.push(cxL8D(ue8W[i]))
+      }
+      return MG3x.join("")
+    };
+    var bUd1x = function(VW6Q) {
+      if (VW6Q == null || VW6Q.length == 0) {
+        return VW6Q
+      }
+      var beQ9H = new String(VW6Q);
+      var rd6X = [];
+      var bq0x = beQ9H.length / 2;
+      var bi0x = 0;
+      for (var i = 0; i < bq0x; i++) {
+        var pg5l = parseInt(beQ9H.charAt(bi0x++), 16) << 4;
+        var ph5m = parseInt(beQ9H.charAt(bi0x++), 16);
+        rd6X[i] = CQ0x(pg5l + ph5m)
+      }
+      return rd6X
+    };
+    var bUi1x = function(cK1x) {
+      if (cK1x == null || cK1x == undefined) {
+        return cK1x
+      }
+      var UM6G = encodeURIComponent(cK1x);
+      var ue8W = [];
+      var bUu1x = UM6G.length;
+      for (var i = 0; i < bUu1x; i++) {
+        if (UM6G.charAt(i) == "%") {
+          if (i + 2 < bUu1x) {
+            ue8W.push(bUd1x(UM6G.charAt(++i) + "" + UM6G.charAt(++i))[0])
+          } else {
+            throw new Error("1009")
+          }
+        } else {
+          ue8W.push(UM6G.charCodeAt(i))
+        }
+      }
+      return ue8W
+    };
+    var cxK8C = function(xz9q) {
+      var bc0x = 0;
+      bc0x += (xz9q[0] & 255) << 24;
+      bc0x += (xz9q[1] & 255) << 16;
+      bc0x += (xz9q[2] & 255) << 8;
+      bc0x += xz9q[3] & 255;
+      return bc0x
+    };
+    var cEG9x = function(bc0x) {
+      var xz9q = [];
+      xz9q[0] = bc0x >>> 24 & 255;
+      xz9q[1] = bc0x >>> 16 & 255;
+      xz9q[2] = bc0x >>> 8 & 255;
+      xz9q[3] = bc0x & 255;
+      return xz9q
+    };
+    var cxG8y = function(cR1x, bhi0x, bq0x) {
+      var dE1x = [];
+      if (cR1x == null || cR1x.length == 0) {
+        return dE1x
+      }
+      if (cR1x.length < bq0x) {
+        throw new Error("1003")
+      }
+      for (var i = 0; i < bq0x; i++) {
+        dE1x[i] = cR1x[bhi0x + i]
+      }
+      return dE1x
+    };
+    var bhD0x = function(cR1x, bhi0x, sD6x, cxD8v, bq0x) {
+      if (cR1x == null || cR1x.length == 0) {
+        return sD6x
+      }
+      if (sD6x == null) {
+        throw new Error("1004")
+      }
+      if (cR1x.length < bq0x) {
+        throw new Error("1003")
+      }
+      for (var i = 0; i < bq0x; i++) {
+        sD6x[cxD8v + i] = cR1x[bhi0x + i]
+      }
+      return sD6x
+    };
+    var cxy8q = function(bq0x) {
+      var bs0x = [];
+      for (var i = 0; i < bq0x; i++) {
+        bs0x[i] = 0
+      }
+      return bs0x
+    };
+    var cxv8n = [82, 9, 106, -43, 48, 54, -91, 56, -65, 64, -93, -98, -127, -13, -41, -5, 124, -29, 57, -126, -101, 47, -1, -121, 52, -114, 67, 68, -60, -34, -23, -53, 84, 123, -108, 50, -90, -62, 35, 61, -18, 76, -107, 11, 66, -6, -61, 78, 8, 46, -95, 102, 40, -39, 36, -78, 118, 91, -94, 73, 109, -117, -47, 37, 114, -8, -10, 100, -122, 104, -104, 22, -44, -92, 92, -52, 93, 101, -74, -110, 108, 112, 72, 80, -3, -19, -71, -38, 94, 21, 70, 87, -89, -115, -99, -124, -112, -40, -85, 0, -116, -68, -45, 10, -9, -28, 88, 5, -72, -77, 69, 6, -48, 44, 30, -113, -54, 63, 15, 2, -63, -81, -67, 3, 1, 19, -118, 107, 58, -111, 17, 65, 79, 103, -36, -22, -105, -14, -49, -50, -16, -76, -26, 115, -106, -84, 116, 34, -25, -83, 53, -123, -30, -7, 55, -24, 28, 117, -33, 110, 71, -15, 26, 113, 29, 41, -59, -119, 111, -73, 98, 14, -86, 24, -66, 27, -4, 86, 62, 75, -58, -46, 121, 32, -102, -37, -64, -2, 120, -51, 90, -12, 31, -35, -88, 51, -120, 7, -57, 49, -79, 18, 16, 89, 39, -128, -20, 95, 96, 81, 127, -87, 25, -75, 74, 13, 45, -27, 122, -97, -109, -55, -100, -17, -96, -32, 59, 77, -82, 42, -11, -80, -56, -21, -69, 60, -125, 83, -103, 97, 23, 43, 4, 126, -70, 119, -42, 38, -31, 105, 20, 99, 85, 33, 12, 125];
+    var Mw3x = 64;
+    var Wg6a = 64;
+    var bxK4O = 4;
+    var cxu8m = function(qV6P) {
+      var bya4e = [];
+      if (qV6P == null || qV6P == undefined || qV6P.length == 0) {
+        return cxy8q(Wg6a)
+      }
+      if (qV6P.length >= Wg6a) {
+        return cxG8y(qV6P, 0, Wg6a)
+      } else {
+        for (var i = 0; i < Wg6a; i++) {
+          bya4e[i] = qV6P[i % qV6P.length]
+        }
+      }
+      return bya4e
+    };
+    var cxt8l = function(Wi6c) {
+      if (Wi6c == null || Wi6c.length % Mw3x != 0) {
+          console.log(Wi6c, Wi6c.length, Mw3x);
+        throw new Error("1005")
+      }
+      var bkD0x = [];
+      var bi0x = 0;
+      var cxs8k = Wi6c.length / Mw3x;
+      for (var i = 0; i < cxs8k; i++) {
+        bkD0x[i] = [];
+        for (var j = 0; j < Mw3x; j++) {
+          bkD0x[i][j] = Wi6c[bi0x++]
+        }
+      }
+      return bkD0x
+    };
+    var cxr8j = function(byl4p) {
+      var pg5l = byl4p >>> 4 & 15;
+      var ph5m = byl4p & 15;
+      var bi0x = pg5l * 16 + ph5m;
+      return cxv8n[bi0x]
+    };
+    var byp4t = function(blS1x) {
+      if (blS1x == null) {
+        return null
+      }
+      var bys4w = [];
+      for (var i = 0, bq0x = blS1x.length; i < bq0x; i++) {
+        bys4w[i] = cxr8j(blS1x[i])
+      }
+      return bys4w
+    };
+    var byx4B = function(Mr3x, qV6P) {
+      if (Mr3x == null) {
+        return null
+      }
+      if (Mr3x.length == 0) {
+        return []
+      }
+      if (Mr3x.length % Mw3x != 0) {
+        console.log(Mr3x.length, Mw3x);
+        throw new Error("1005")
+      }
+      qV6P = cxu8m(qV6P);
+      var bpL2x = qV6P;
+      var bqw2x = cxt8l(Mr3x);
+      var Uo5t = [];
+      var cxq8i = bqw2x.length;
+      for (var i = 0; i < cxq8i; i++) {
+        var bqx2x = byp4t(bqw2x[i]);
+        bqx2x = byp4t(bqx2x);
+        var bqy2x = bTE0x(bqx2x, bpL2x);
+        var cxp8h = cxV8N(bqy2x, cxT8L(bpL2x));
+        bqy2x = bTE0x(cxp8h, qV6P);
+        bhD0x(bqy2x, 0, Uo5t, i * Mw3x, Mw3x);
+        bpL2x = bqw2x[i]
+      }
+      var bzj4n = [];
+      bhD0x(Uo5t, Uo5t.length - bxK4O, bzj4n, 0, bxK4O);
+      var bq0x = cxK8C(bzj4n);
+      if (bq0x > Uo5t.length) {
+        console.log(bq0x, Uo5t);
+        throw new Error("1006")
+      }
+      var rd6X = [];
+      bhD0x(Uo5t, 0, rd6X, 0, bq0x);
+      return rd6X
+    };
+    var cxo8g = function(Wy6s, J0x) {
+      if (Wy6s == null) {
+        return null
+      }
+      var bzs4w = new String(Wy6s);
+      if (bzs4w.length == 0) {
+        return []
+      }
+      var Mr3x = bUd1x(bzs4w);
+      if (J0x == null || J0x == undefined) {
+        throw new Error("1007")
+      }
+      var qV6P = bUi1x(J0x);
+      return byx4B(Mr3x, qV6P)
+    };
+    var cxn8f = function(Wy6s, J0x) {
+      var btn3x = cxo8g(Wy6s, J0x);
+      var FE1x = new String(bTX1x(btn3x));
+      var Aj0x = [];
+      var btH3x = FE1x.length / 2;
+      var bi0x = 0;
+      for (var i = 0; i < btH3x; i++) {
+        Aj0x.push("%");
+        Aj0x.push(FE1x.charAt(bi0x++));
+        Aj0x.push(FE1x.charAt(bi0x++))
+      }
+      return Aj0x.join("")
+    };
+
+    var cyG8y = function(buO3x, J0x) {
+      return cxm8e(k0x.cDa9R(buO3x), J0x)
+    };
+
+    var cxm8e = function(buO3x, J0x) {
+      var btn3x = byx4B(buO3x, bUi1x(J0x));
+      var FE1x = new String(bTX1x(btn3x));
+      var Aj0x = [];
+      var btH3x = FE1x.length / 2;
+      var bi0x = 0;
+      for (var i = 0; i < btH3x; i++) {
+        Aj0x.push("%");
+        Aj0x.push(FE1x.charAt(bi0x++));
+        Aj0x.push(FE1x.charAt(bi0x++))
+      }
+      return Aj0x.join("")
+    };
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+{
+    "openFacerecognize": {
+       "if": true,
+       "name": "\u5f00\u542f\u9762\u90e8\u8bc6\u522b",
+       "type": "switch"
+    },
+    "openLogin": {
+       "if": true,
+       "name": "\u5f00\u542f\u767b\u5f55",
+       "type": "switch"
+    },
+    "openLogon": {
+       "name": "\u5f00\u542f\u6ce8\u518c",
+       "options": [
+          {
+             "label": "\u90ae\u7bb1\u6ce8\u518c",
+             "value": "mail"
+          },
+          {
+             "label": "\u65e0\u9650\u5236\u6ce8\u518c",
+             "value": "open"
+          },
+          {
+             "label": "\u5173\u95ed\u6ce8\u518c",
+             "value": "close"
+          }
+       ],
+       "type": "select",
+       "value": "close"
+    },
+    "rootredirect": {
+       "name": "\u6839\u76ee\u5f55\u91cd\u5b9a\u5411",
+       "type": "input",
+       "where": "/"
+    }
+ }

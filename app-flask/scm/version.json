@@ -1,0 +1,18 @@
+{
+   "book-vue3": {
+      "now_version": "v1.0.0",
+      "url": "https://github.com/xccccccy/book-vue3",
+      "versions": [
+         "v1.0.0",
+         "v1.0.1"
+      ]
+   },
+   "flask-vue-myworld": {
+      "now_version": "v1.0.0",
+      "url": "https://github.com/xccccccy/flask-vue-myworld",
+      "versions": [
+         "v1.0.0",
+         "v1.0.1"
+      ]
+   }
+}

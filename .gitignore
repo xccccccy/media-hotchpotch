@@ -2,14 +2,15 @@
 **.DS_Store
 **.vscode
 
-./app-flask/config/allconfig.json
-./app-flask/database/data.sqlite
-./app-flask/face_recognize/face_encodings/*.npy
-./app-flask/logs/
-./app-flask/static/
-./app-flask/temp/
+app-flask/config/allconfig.json
+app-flask/database/data.sqlite
+app-flask/face_recognize/face_encodings/*.npy
+logs/
+static/
+temp/
+*.log
 
-./app-vue3/node_modules
-./app-vue3/dist/
+node_modules
+dist/
 
-nigix/xcya.*
+nginx/xcya.*

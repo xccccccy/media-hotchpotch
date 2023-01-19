@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>翻面</title>
+    <style type="text/css">
+        .box{
+            width:300px;
+            height:272px;
+            margin:50px auto 0;
+            transform-style:preserve-3d;
+            position:relative;
+        }
+        .box .pic{
+            width:300px;
+            height:272px;
+            position:absolute;
+            background-color:cyan;
+            left:0;
+            top:0;
+            transform:perspective(800px) rotateY(0deg);
+            backface-visibility:hidden;
+            transition:all 500ms ease;
+        }
+        .box .back_info{
+            width:300px;
+            height:272px;
+            text-align:center;
+            line-height:272px;
+            background-color:gold;
+            position:absolute;
+            left:0;
+            top:0;
+            transform:rotateY(180deg);
+            backface-visibility:hidden;
+            transition:all 500ms ease;
+        }
+        .box:hover .pic{
+            transform:perspective(800px) rotateY(180deg);
+        }
+        .box:hover .back_info{
+            transform:perspective(800px) rotateY(0deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="pic"><img src="/img/home.svg"></div>
+        <div class="back_info">背面文字说明</div>
+    </div>
+</body>
+</html>

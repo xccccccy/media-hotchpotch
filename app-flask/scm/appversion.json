@@ -1,0 +1,12 @@
+{
+    "myworld": {
+        "v1.0.0": {
+            "book-vue3": {
+                "version": "v1.0.0"
+             },
+             "flask-vue-myworld": {
+                "version": "v1.0.0"
+             }
+        }
+    }
+}

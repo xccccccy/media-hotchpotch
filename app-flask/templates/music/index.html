@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>▶ 音乐</title>
+  <!-- require APlayer -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+  <!-- require MetingJS -->
+  <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+</head>
+
+<body>
+  <div style="text-align: center;">
+    <h2>我喜欢的音乐</h2>
+  </div>
+  <!-- <meting-js server="netease" type="playlist" id="7098309795"></meting-js> -->
+  <div style="text-align: center;">
+    <h2>美国Billboard榜 歌单</h2>
+  </div>
+  <!-- <meting-js server="netease" type="playlist" id="60198" list-folded="true"></meting-js>-->
+  <div style="text-align: center;">
+    <h2>热歌榜</h2>
+  </div>
+  <meting-js server="netease" type="playlist" id="3778678" fixed="true" preload="auto" list-folded="true">
+
+  </meting-js>
+</body>
+
+</html>

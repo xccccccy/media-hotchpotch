@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>My Home</title>
+  <link href="/css/main.css" rel="stylesheet">
+  <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
+</head>
+<body>
+
+<div id="app">
+  <div class="page-title">
+    <img src="/img/home_test.svg">
+    <span>Welcome to My Test</span>
+  </div>
+  <div class="module-list">
+    {% for test in test_list %}
+
+        <div>
+          <a href="/test/[[ test ]]">
+            <img src="/img/home_book.svg">
+            <span>[[ test ]]</span>
+          </a>
+        </div>
+
+    {% endfor %}
+  </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script>
+
+  const EventHandling = {
+    data() {
+      return {
+        module_more_show:false,
+      }
+    },
+    methods: {
+      test() {
+        console.log(this.search_books)
+      }
+    }
+  }
+
+  app = Vue.createApp(EventHandling)
+
+  const vm = app.mount('#app')
+
+</script>
+
+</body>
+</html>
