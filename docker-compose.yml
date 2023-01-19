@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/nginx.conf:/tmp/nginx.conf
+    environment: 
+      - FLASK_SERVER_ADDR=backend:5001  
+    command: /bin/bash -c "envsubst < /tmp/nginx.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'" 
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+
+  backend:
+    image: app-flask
+    build:
+      context: ./app-flask
+      dockerfile: ./Dockerfile
+    container_name: flask_container
+    ports:
+      - 5001:5001
+    working_dir: /app
+    volumes:
+      - ./app-flask/database/data.sqlite:/app/database/data.sqlite
+      - ./app-flask/config:/app/config
+      - ./app-flask/logs:/app/logs
+      - ./app-vue3/dist:/app/static
+    depends_on:
+      - frontend
+  
+  frontend:
+    image: node:18-alpine
+    command: sh -c "npm install && npm run build"
+    working_dir: /app
+    volumes:
+      - ./app-vue3:/app
+  
+
