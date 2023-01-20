@@ -2,9 +2,9 @@ name: APP AUTO DEPLOY
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "develop" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "develop" ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,7 +29,7 @@ jobs:
       run: |
         mkdir -p ~/.ssh/ && echo "$KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
         echo ${SSL_KEY} > nginx/xcya.key && echo ${SSL_PEM} > nginx/xcya.pem
-        ssh -o StrictHostKeyChecking=no ${USER}@${HOST} "rm -rf ~/media-hotchpotch && docker rmi $(docker images | grep "none" | awk '{print $3}')"
+        ssh -o StrictHostKeyChecking=no ${USER}@${HOST} "sudo rm -rf ~/media-hotchpotch"
         scp -o StrictHostKeyChecking=no -r ./ ${USER}@${HOST}:~/media-hotchpotch
-        ssh -o StrictHostKeyChecking=no ${USER}@${HOST} "docker compose up -d --build"
+        ssh -o StrictHostKeyChecking=no ${USER}@${HOST} "sh restart.sh"
         
