@@ -31,5 +31,5 @@ jobs:
         echo ${SSL_KEY} > nginx/xcya.key && echo ${SSL_PEM} > nginx/xcya.pem
         ssh -o StrictHostKeyChecking=no ${USER}@${HOST} "sudo rm -rf ~/media-hotchpotch"
         scp -o StrictHostKeyChecking=no -r ./ ${USER}@${HOST}:~/media-hotchpotch
-        ssh -o StrictHostKeyChecking=no ${USER}@${HOST} "sh restart.sh"
+        ssh -o StrictHostKeyChecking=no ${USER}@${HOST} "sudo sh restart.sh  > /dev/null 2>&1 &"
         
