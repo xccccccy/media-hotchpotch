@@ -39,4 +39,12 @@ pipenv install face_recognition
     cmake -version
     sudo ln -s cmake /usr/bin/cmake
 
+# close face recognition
+## pip requirements
+dlib==19.24.0
+face-recognition==1.3.0
+face-recognition-models==0.3.0
+opencv-python-headless
+numpy==1.24.1
+Pillow==9.4.0
 

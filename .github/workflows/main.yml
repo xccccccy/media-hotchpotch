@@ -28,8 +28,8 @@ jobs:
         SSL_PEM: ${{ secrets.SSL_PEM }}
       run: |
         mkdir -p ~/.ssh/ && echo "$KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-        echo ${SSL_KEY} > nginx/xcya.key && echo ${SSL_PEM} > nginx/xcya.pem
-        ssh -o StrictHostKeyChecking=no ${USER}@${HOST} "sudo rm -rf ~/media-hotchpotch"
-        scp -o StrictHostKeyChecking=no -r ./ ${USER}@${HOST}:~/media-hotchpotch
-        ssh -o StrictHostKeyChecking=no ${USER}@${HOST} "sudo sh restart.sh  > /dev/null 2>&1 &"
+
+        ssh -o StrictHostKeyChecking=no ${USER}@${HOST} "cd ~/media-hotchpotch & if [ $(find app-flask | grep '/static' | head -1) ];then rm -rf app-flask/static;fi"
+        scp -o StrictHostKeyChecking=no -r app-vue3/dist ${USER}@${HOST}:~/media-hotchpotch/app-flask/static
         
+        ssh -o StrictHostKeyChecking=no ${USER}@${HOST} "cd ~/media-hotchpotch & sudo sh restart.sh  > /dev/null 2>&1 &"

@@ -19,23 +19,13 @@ services:
     build:
       context: ./app-flask
       dockerfile: ./Dockerfile
+      args:
+        HOST_UID: $MYUID
     container_name: flask_container
     ports:
       - 5001:5001
     working_dir: /app
     volumes:
-      - ./app-flask/database/data.sqlite:/app/database/data.sqlite
-      - ./app-flask/config:/app/config
-      - ./app-flask/logs:/app/logs
-      - ./app-vue3/dist:/app/static
-    depends_on:
-      - frontend
-  
-  frontend:
-    image: node:18-alpine
-    command: sh -c "npm install && npm run build"
-    working_dir: /app
-    volumes:
-      - ./app-vue3:/app
+      - ./app-flask:/app
   
 
