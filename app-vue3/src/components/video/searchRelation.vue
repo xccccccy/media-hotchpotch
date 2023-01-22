@@ -168,7 +168,7 @@ const filterVideoList = computed(() =>
 
 // search
 const search_string = ref('')
-const search_info = ref('暂无搜索。')
+const search_info = ref('暂无搜索...')
 const searchVideo = (s) => {
     let search_s = s || search_string.value;
     if (search_s.includes("http")) {
