@@ -46,7 +46,9 @@ var videoStore = useVideoStore()
 // series_bottom
 const series_bottom = computed(() => {
     let _series = []
-    if (Object.keys(videoStore.videoItem).length == 0) { return _series }
+    if (!videoStore.videoItem.url) {
+        return _series;
+    }
     videoStore.videoItem.url.split('#').forEach(seriesUrl => {
         let serie = {};
         serie.name = seriesUrl.split('$')[0];

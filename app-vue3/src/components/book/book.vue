@@ -132,10 +132,15 @@ export default {
         },
         initBookShelf() {
             this.bookshelf = JSON.parse(localStorage.bookshelf);
+            if (!Object.keys(this.bookshelf).length) {
+                this.bookshelf_show = false;
+                this.bookbox_list_show = true;
+            }
             getBookShelf().then((res) => {
                 this.bookshelf = res;
                 if (!Object.keys(this.bookshelf).length) {
                     this.bookshelf_show = false;
+                    this.bookbox_list_show = true;
                 }
             });
         },

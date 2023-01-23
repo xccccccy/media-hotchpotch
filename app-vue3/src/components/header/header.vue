@@ -1,5 +1,5 @@
 <template>
-    <div v-show="!isHidden" class="fixed top-0 left-0 header-container bg-slate-200 bg-opacity-50 dark:bg-zinc-900 dark:bg-opacity-50">
+    <div v-show="!isHidden" class="fixed top-0 left-0 header-container bg-slate-200 bg-opacity-50 dark:bg-zinc-900 dark:bg-opacity-50 shadow">
         <div class="header space-x-0.5 sm:space-x-2 w-full mx-auto">
             <HeaderHome :homeSetting="homeSetting"></HeaderHome>
             <component v-for="(headerSetting, index) in headerSettings" :is="headers[headerSetting.type]"

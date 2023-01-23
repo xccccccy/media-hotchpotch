@@ -1,5 +1,5 @@
 <template>
-    <div v-show="Object.keys(videoStore.videoItem).length > 0 ? videoStore.videoItem.url.split('#').length > 1 : false"
+    <div v-show="videoStore.videoItem.url ? videoStore.videoItem.url.split('#').length > 1 : false"
         class="pl-2 pb-2 mb-4 border-violet-300 border-opacity-50 dark:border-opacity-60 dark:border-violet-500 border rounded-md dark-transition shadow-xl dark:shadow-none bg-slate-200 dark:bg-slate-700 backdrop-filter bg-opacity-50 dark:bg-opacity-50">
         <div
             class="my-2 flex items-center border-b pb-2 border-violet-300 border-opacity-80 dark:border-opacity-60 dark:border-violet-500">
@@ -46,7 +46,9 @@ export default {
         });
         const series = computed(() => {
             let _series = []
-            if (Object.keys(videoStore.videoItem).length == 0) { return _series }
+            if (!videoStore.videoItem.url) {
+                return _series;
+            }
             videoStore.videoItem.url.split('#').forEach(movieUrl => {
                 let serie = {};
                 serie.name = movieUrl.split('$')[0];
