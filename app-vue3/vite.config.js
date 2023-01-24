@@ -8,8 +8,9 @@ import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 
 let localDevApiUrl = 'http://localhost:5001'
+let remoteApiUrl = 'https://xcya.cn'
 
-var realApiUrl = localDevApiUrl
+var realApiUrl = remoteApiUrl
 
 // https://vitejs.dev/config/
 export default defineConfig({

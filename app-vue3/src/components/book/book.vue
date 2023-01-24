@@ -104,22 +104,22 @@ export default {
                                 placeholder: "搜索书籍。",
                                 clickHandle: this.searchbook
                             },
+                            // {
+                            //     type: 'common',
+                            //     // headerString: '搜索',
+                            //     iconSetting: markRaw(CarbonSearch),
+                            //     clickHandle: this.back_search
+                            // },
                             {
                                 type: 'common',
-                                // headerString: '搜索',
-                                iconSetting: markRaw(CarbonSearch),
-                                clickHandle: this.back_search
-                            },
-                            {
-                                type: 'common',
-                                // headerString: '书架',
-                                iconSetting: markRaw(CarbonBook),
+                                headerString: '书架',
+                                // iconSetting: markRaw(CarbonBook),
                                 clickHandle: this.backbookshelf
                             },
                             {
                                 type: 'common',
-                                // headerString: 'Shǎng',
-                                iconSetting: markRaw(notoMoneyBag),
+                                headerString: 'Shǎng',
+                                // iconSetting: markRaw(notoMoneyBag),
                                 clickHandle: this.shangqian,
                                 style: "font-weight: 500; color: #CD9D02"
                             }

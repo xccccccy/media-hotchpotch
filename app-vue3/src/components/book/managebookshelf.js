@@ -13,9 +13,15 @@ export const getBookShelf = async () => {
   let localBookShelf = JSON.parse(localStorage.bookshelf);
   if (user) {
     let netBookShelf = await getNetBookShelf(user.id);
-    localBookShelf = netBookShelf;
+    Object.keys(netBookShelf).forEach((value, index) => {
+      if (localBookShelf[value]) {
+        localBookShelf[value].catalogue_id = localBookShelf[value].catalogue_id > netBookShelf[value].catalogue_id ? localBookShelf[value].catalogue_id : netBookShelf[value].catalogue_id;
+      } else {
+        localBookShelf[value] = localBookShelf[value];
+      }
+    })
     localStorage.bookshelf = JSON.stringify(localBookShelf);
-    // updataNetBookshelf(user.id);
+    updataNetBookshelf(user.id);
     return localBookShelf
   }
   return localBookShelf;

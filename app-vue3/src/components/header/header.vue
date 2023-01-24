@@ -5,9 +5,11 @@
             <component v-for="(headerSetting, index) in headerSettings" :is="headers[headerSetting.type]"
                 v-show="!headerSetting.hidden" @click="activateHeaderOfIndex(index)" :key="index"
                 :class="{ headeractivate: headeractivate[index] }" :headerSetting="headerSetting"></component>
+            <div class="h-3 w-px bg-current ml-6 mr-2" style="padding: 0 !important; margin-left: 1rem !important; margin-right: 0.5rem !important;">
+
+            </div>
             <DrakMode @darkModeChange="darkModeChange"></DrakMode>
             <User @userLog="userLog"></User>
-            <component is="carbon-accessibility"/>
         </div>
     </div>
 </template>
@@ -145,7 +147,7 @@ export default {
 
 .header {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: flex-end;
 }
 

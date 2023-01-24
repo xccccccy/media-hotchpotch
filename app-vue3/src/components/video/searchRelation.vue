@@ -30,96 +30,105 @@
         </div>
         <div v-show="videoList.length > 0">
             <div class="flex items-start">
-                <div class="rounded-lg border dark:border-slate-700 overflow-hidden shadow-lg hidden sm:block"
+                <div class="hidden sm:block"
                     style="width: 32%; min-width: 200px;">
-                    <h3 class="p-5 bg-indigo-500 text-white dark:bg-slate-700 font-semibold text-xl">搜索结果</h3>
-                    <ul class="pb-2 bg-white dark:bg-slate-700">
-                        <li>
-                            <div class="bg-white dark:bg-zinc-900 flex items-center cursor-pointer"
-                                @click="searchTypeShow = !searchTypeShow">
-                                <div class="h-5 w-1 bg-indigo-600"></div>
-                                <div class="px-3 py-3 font-medium">类型</div>
-                                <div class="bg-indigo-300 rounded-lg text-xs text-black badge"
-                                    @click.stop="searchTypeActivateType = 'all'" style="padding: 2px 8px;"
-                                    v-show="searchTypeActivateType != 'all'">
-                                    {{ searchTypeActivateType }}
-                                    <Close class="h-3 inline-block" />
-                                </div>
-                                <ArrowRight v-if="!searchTypeShow" class="h-4 px-6 ml-auto" />
-                                <ArrowDown v-else class="h-4 px-6 ml-auto" />
-                            </div>
-                            <ul class="py-2 type bg-zinc-100 dark:bg-slate-800 type-1" v-show="searchTypeShow">
-                                <li v-for="(value, key) in searchType" :key="key"
-                                    :class="{ activateli : searchTypeActivateType == key}"
-                                    class="cursor-pointer pl-8 pr-5 py-2 text-tiny hover:bg-zinc-200 dark:hover:bg-slate-700"
-                                    @click="selectType(key)">
-                                    <div class="flex justify-between items-center">
-                                        <span>{{ key }}</span>
-                                        <div
-                                            class="px-3 font-medium text-sm bg-slate-100 dark:bg-slate-200 text-stone-900 rounded-md">
-                                            {{ value }}</div>
+                    <el-affix :offset="60" style="width: auto !important;">
+                        <div class="rounded-lg border dark:border-slate-700 overflow-hidden shadow-lg">
+                            <h3 class="p-5 bg-indigo-500 text-white dark:bg-slate-700 font-semibold text-xl">搜索结果</h3>
+                            <ul class="pb-2 bg-white dark:bg-slate-700">
+                                <li>
+                                    <div class="bg-white dark:bg-zinc-900 flex items-center cursor-pointer"
+                                        @click="searchTypeShow = !searchTypeShow">
+                                        <div class="h-5 w-1 bg-indigo-600"></div>
+                                        <div class="px-3 py-3 font-medium">类型</div>
+                                        <div class="bg-indigo-300 rounded-lg text-xs text-black badge"
+                                            @click.stop="searchTypeActivateType = 'all'" style="padding: 2px 8px;"
+                                            v-show="searchTypeActivateType != 'all'">
+                                            {{ searchTypeActivateType }}
+                                            <Close class="h-3 inline-block" />
+                                        </div>
+                                        <ArrowRight v-if="!searchTypeShow" class="h-4 px-6 ml-auto" />
+                                        <ArrowDown v-else class="h-4 px-6 ml-auto" />
                                     </div>
+                                    <ul class="py-2 type bg-zinc-100 dark:bg-slate-800 type-1" v-show="searchTypeShow">
+                                        <li v-for="(value, key) in searchType" :key="key"
+                                            :class="{ activateli: searchTypeActivateType == key }"
+                                            class="cursor-pointer pl-8 pr-5 py-2 text-tiny hover:bg-zinc-200 dark:hover:bg-slate-700"
+                                            @click="selectType(key)">
+                                            <div class="flex justify-between items-center">
+                                                <span>{{ key }}</span>
+                                                <div
+                                                    class="px-3 font-medium text-sm bg-slate-100 dark:bg-slate-200 text-stone-900 rounded-md">
+                                                    {{ value }}</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div class="bg-white dark:bg-zinc-900 flex items-center cursor-pointer"
+                                        @click="searchCountryShow = !searchCountryShow">
+                                        <div class="h-5 w-1 bg-yellow-400"></div>
+                                        <div class="px-3 py-3 font-medium">地区</div>
+                                        <div class="bg-yellow-300 rounded-lg text-xs text-black badge"
+                                            @click.stop="searchCountryActivateType = 'all'" style="padding: 2px 8px;"
+                                            v-show="searchCountryActivateType != 'all'">{{
+                                                searchCountryActivateType
+                                            }}
+                                            <Close class="h-3 inline-block" />
+                                        </div>
+                                        <ArrowRight v-if="!searchCountryShow" class="h-4 px-6 ml-auto" />
+                                        <ArrowDown v-else class="h-4 px-6 ml-auto" />
+                                    </div>
+                                    <ul class="py-2 type bg-zinc-100 dark:bg-slate-800 type-2"
+                                        v-show="searchCountryShow">
+                                        <li v-for="(value, key) in searchCountry" :key="key"
+                                            :class="{ activateli: searchCountryActivateType == key }"
+                                            class="cursor-pointer pl-8 pr-5 py-2 text-tiny hover:bg-zinc-200 dark:hover:bg-slate-700"
+                                            @click="selectCountry(key)">
+                                            <div class="flex justify-between items-center">
+                                                <span>{{ key }}</span>
+                                                <div
+                                                    class="px-3 font-medium text-sm bg-slate-100 dark:bg-slate-200 text-stone-900 rounded-md">
+                                                    {{ value }}</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div class="bg-white dark:bg-zinc-900 flex items-center cursor-pointer"
+                                        @click="searchLanguageShow = !searchLanguageShow">
+                                        <div class="h-5 w-1 bg-red-500"></div>
+                                        <div class="px-3 py-3 font-medium">语言</div>
+                                        <div class=" bg-red-300 rounded-lg text-xs text-black badge"
+                                            @click.stop="searchLanguageActivateType = 'all'" style="padding: 2px 8px;"
+                                            v-show="searchLanguageActivateType != 'all'">{{
+                                                searchLanguageActivateType
+                                            }}
+                                            <Close class="h-3 inline-block" />
+                                        </div>
+                                        <ArrowRight v-if="!searchLanguageShow" class="h-4 px-6 ml-auto" />
+                                        <ArrowDown v-else class="h-4 px-6 ml-auto" />
+                                    </div>
+                                    <ul class="py-2 type bg-zinc-100 dark:bg-slate-800 type-3"
+                                        v-show="searchLanguageShow">
+                                        <li v-for="(value, key) in searchLanguage" :key="key"
+                                            :class="{ activateli: searchLanguageActivateType == key }"
+                                            class="cursor-pointer pl-8 pr-5 py-2 text-tiny hover:bg-zinc-200 dark:hover:bg-slate-700"
+                                            @click="selectLanguage(key)">
+                                            <div class="flex justify-between items-center">
+                                                <span>{{ key }}</span>
+                                                <div
+                                                    class="px-3 font-medium text-sm bg-slate-100 dark:bg-slate-200 text-stone-900 rounded-md">
+                                                    {{ value }}</div>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
-                        </li>
-                        <li>
-                            <div class="bg-white dark:bg-zinc-900 flex items-center cursor-pointer"
-                                @click="searchCountryShow = !searchCountryShow">
-                                <div class="h-5 w-1 bg-yellow-400"></div>
-                                <div class="px-3 py-3 font-medium">地区</div>
-                                <div class="bg-yellow-300 rounded-lg text-xs text-black badge"
-                                    @click.stop="searchCountryActivateType = 'all'" style="padding: 2px 8px;"
-                                    v-show="searchCountryActivateType != 'all'">{{
-                                    searchCountryActivateType }}
-                                    <Close class="h-3 inline-block" />
-                                </div>
-                                <ArrowRight v-if="!searchCountryShow" class="h-4 px-6 ml-auto" />
-                                <ArrowDown v-else class="h-4 px-6 ml-auto" />
-                            </div>
-                            <ul class="py-2 type bg-zinc-100 dark:bg-slate-800 type-2" v-show="searchCountryShow">
-                                <li v-for="(value, key) in searchCountry" :key="key"
-                                    :class="{ activateli : searchCountryActivateType == key}"
-                                    class="cursor-pointer pl-8 pr-5 py-2 text-tiny hover:bg-zinc-200 dark:hover:bg-slate-700"
-                                    @click="selectCountry(key)">
-                                    <div class="flex justify-between items-center">
-                                        <span>{{ key }}</span>
-                                        <div
-                                            class="px-3 font-medium text-sm bg-slate-100 dark:bg-slate-200 text-stone-900 rounded-md">
-                                            {{ value }}</div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <div class="bg-white dark:bg-zinc-900 flex items-center cursor-pointer"
-                                @click="searchLanguageShow = !searchLanguageShow">
-                                <div class="h-5 w-1 bg-red-500"></div>
-                                <div class="px-3 py-3 font-medium">语言</div>
-                                <div class=" bg-red-300 rounded-lg text-xs text-black badge"
-                                    @click.stop="searchLanguageActivateType = 'all'" style="padding: 2px 8px;"
-                                    v-show="searchLanguageActivateType != 'all'">{{ searchLanguageActivateType
-                                    }}
-                                    <Close class="h-3 inline-block" />
-                                </div>
-                                <ArrowRight v-if="!searchLanguageShow" class="h-4 px-6 ml-auto" />
-                                <ArrowDown v-else class="h-4 px-6 ml-auto" />
-                            </div>
-                            <ul class="py-2 type bg-zinc-100 dark:bg-slate-800 type-3" v-show="searchLanguageShow">
-                                <li v-for="(value, key) in searchLanguage" :key="key"
-                                    :class="{ activateli : searchLanguageActivateType == key}"
-                                    class="cursor-pointer pl-8 pr-5 py-2 text-tiny hover:bg-zinc-200 dark:hover:bg-slate-700"
-                                    @click="selectLanguage(key)">
-                                    <div class="flex justify-between items-center">
-                                        <span>{{ key }}</span>
-                                        <div
-                                            class="px-3 font-medium text-sm bg-slate-100 dark:bg-slate-200 text-stone-900 rounded-md">
-                                            {{ value }}</div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                        </div>
+                    </el-affix>
                 </div>
+
                 <div class="ml-0 sm:ml-6 w-full">
                     <VideoItem v-for="video in filterVideoList" :key="video.id" :item="video">
                     </VideoItem>
