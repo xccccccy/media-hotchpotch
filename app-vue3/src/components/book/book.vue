@@ -1,25 +1,25 @@
 <template>
     <div class="app w-full sm:w-3/4 2xl:w-2/3">
+        <div class="search-two">
+            <el-input v-model="search_string" placeholder="搜索书籍。" class="input-with-select" @keyup.enter="searchbook()"
+                size="large">
+                <template #suffix>
+                    <el-icon class="el-input__icon" @click="searchbook()">
+                        <search />
+                    </el-icon>
+                </template>
+            </el-input>
+        </div>
         <div class="book-list" v-if="bookshelf_show">
             <div class="list-title">
                 <span>我的书架</span>
             </div>
-            <el-row>
+            <el-row class="justify-evenly">
                 <bookshelfbox v-for="book in bookshelf" :key="book.book_id" :book="book" @delBook="delbook">
                 </bookshelfbox>
             </el-row>
         </div>
         <div class="book-list" v-if="bookbox_list_show">
-            <div class="search-two">
-                <el-input v-model="search_string" placeholder="搜索书籍。" class="input-with-select"
-                    @keyup.enter="searchbook()" size="large">
-                    <template #suffix>
-                        <el-icon class="el-input__icon" @click="searchbook()">
-                            <search />
-                        </el-icon>
-                    </template>
-                </el-input>
-            </div>
             <div class="list-title">
                 <span v-html="search_info"></span>
             </div>

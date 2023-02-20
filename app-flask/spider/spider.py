@@ -17,7 +17,7 @@ def spider_decorator(func):
         try:
             return func(*args, **kwargs)
         except Exception as r:
-            logging.getLogger('MyWorld').error(f'- NET - {func.__name__} - {tuple(inspect.getargspec(func)[0])} - {args} - {r}')
+            logging.getLogger('MyWorld').error(f'- NET - {func.__name__} - {tuple(inspect.getfullargspec(func)[0])} - {args} - {r}')
             print(f'未知错误 %s' %(r))
             return None
     return wrapTheFunction
@@ -26,6 +26,8 @@ def test_connect():
     resp = session.get(home_url, headers=get_headers(), timeout=3)
     return resp.status_code
 
+
+# book 相关的
 @spider_decorator
 def book_search(search_string):
     search_resp = session.get(home_url + '/s', headers=get_headers(), params={'q': search_string}, timeout=5)
@@ -101,6 +103,96 @@ def book_content(book_id, catalogue_number):
     return {'catalogue_name': book_catalogue_name, 'content': context_0}
 
 
+# video 相关的
+@spider_decorator
+def web_video_search(search_string):
+    aiqiyi_videos = aiqiyi_video_search(search_string)
+    return aiqiyi_videos + []
+
+# @spider_decorator
+def aiqiyi_video_search(search_string):
+    search_resp = session.get("https://so.iqiyi.com/so" + '/q_' + search_string, headers=get_headers(), timeout=5)
+    search_bsobj = BeautifulSoup(search_resp.content.decode(), 'lxml')
+
+    result_items = search_bsobj.find_all('div', {'class': 'qy-search-result-item'})
+    all_videos = []
+    all_videos_type = []
+    for item in result_items:
+        item_type_bsobj = item.find('span', {'class': 'item-type'})
+        if item_type_bsobj:
+            all_videos_type.append(item_type_bsobj.getText())
+            if item_type_bsobj.getText() in ["电视剧", "电影", "综艺"]:
+                video = {}
+                video['type'] = item.find('span', {'class': 'item-type'}).getText()
+                video['name'] = item.find('a', {'class': 'main-tit'}).get('title')
+                video['pic'] = "https://" + item.find('div', {'class': 'qy-mod-img'}).find('source').get('srcset').split('?')[0][2:]
+                video['year'] = item.find('em', {'class': 'year'}).getText()
+                for info in item.findAll('div', {'class': 'qy-search-result-info multiple'}):
+                    info_type = info.find('label').getText()
+                    if info_type == "简介:":
+                        video['des'] = info.find('span').get('title')
+                        video['video_url'] = "https://" + info.find('a').get('href')[2:]
+                        break
+                if item_type_bsobj.getText() not in ["综艺"]:
+                    video['note'] = item.find('span', {'class': 'qy-mod-label'}).getText()
+                    for info in item.findAll('div', {'class': 'qy-search-result-info half'}):
+                        info_type = info.find('label').getText()
+                        if info_type == "导演:":
+                            video['director'] = ','.join([actor.getText() for actor in info.findAll('a')])
+                        elif info_type == "主演:":
+                            video['actor'] = ','.join([actor.getText() for actor in info.findAll('a')])
+                all_videos.append(video)
+
+    all_videourls = []
+    for script_bsobj in search_bsobj.findAll('script'):
+        if "cardData" in script_bsobj.getText():
+            script_urls_str = script_bsobj.getText()
+            break
+    script_videoinfo_items_str = re.match('.*?list:\[(.*?})],sear', script_urls_str).group(1).replace('\n', '').replace(' ', '')
+    script_videoinfo_items = script_videoinfo_items_str.split(',{id:')
+    j = 0
+    for i in range(len(script_videoinfo_items)):
+        videoinfo_item_str = script_videoinfo_items[i]
+        if "tag:" in videoinfo_item_str:
+            match_result = re.match(r'.*?tag:"(.*?)"', videoinfo_item_str)
+            if match_result:
+                video_type = match_result.group(1)
+            else:
+                if j >= len(all_videos_type):
+                    continue
+                video_type = all_videos_type[j]
+            if video_type in ["电视剧", "综艺"]:
+                urls = []
+                videoinfos_list = re.findall(r"\{(.*?)}", re.match(r".*?videoinfos:\[(.*?)],", videoinfo_item_str.replace('\\u002F', '/')).group(1))
+                for video_info in videoinfos_list:
+                    video_url = re.match(r'.*?,url:"(.*?)"', video_info)
+                    video_name = re.match(r'.*?name:"(.*?)"', video_info)
+                    urls.append({"name": video_name.group(1) if video_name else "", "url": "https://" + video_url.group(1)[2:] if video_url else ""})
+                all_videourls.append(urls)
+            elif video_type == "电影":
+                all_videourls.append("")
+            elif video_type in ["小说", "知识", "动漫"]:
+                pass
+            j += 1
+
+    for i in range(len(all_videos)):
+        if all_videos[i]['type'] in ["电视剧", "综艺"]:
+            videourls = all_videourls[i]
+            if videourls[0]["url"] == "":
+                videourls[0]["url"] = all_videos[i]["video_url"]
+            for j in range(len(videourls)):
+                url_item = videourls[j]
+                if not url_item['name']:
+                    videourls[j]['name'] = all_videos[i]["name"] + f" 第{j + 1}集"
+            # all_videos[i]["urls"] = videourls
+            all_videos[i]["url"] = "#".join([f"{videourl['name']}${videourl['url']}$qiyi" for videourl in videourls])
+        else:
+            all_videos[i]["url"] = f"HD${all_videos[i]['video_url']}$qiyi"
+        del all_videos[i]['video_url']
+        # del all_videos[i]['urls']
+        
+    return all_videos
+
 def get_headers():
     UA = [
           "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0",
@@ -138,3 +230,7 @@ def get_headers():
                       'Chrome/98.0.4758.102 Safari/537.36'  # random.choice(UA),
     }
     return headers
+
+
+if __name__ == "__main__":
+    print(aiqiyi_video_search("开工了"))

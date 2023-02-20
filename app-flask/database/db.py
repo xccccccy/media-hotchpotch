@@ -52,9 +52,9 @@ class Bookshelf(db.Model):
     def __repr__(self):
         return '<Bookshelf ->  User_id:%s, Bookshelf:%s >' % self.id, self.bookshelf
 
-class Audio(db.Model):
+class Video(db.Model):
     # 定义表名
-    __tablename__ = 'AudioList'
+    __tablename__ = 'VideoList'
     # 定义列对象
     id = db.Column(db.String(64), primary_key=True)
     name = db.Column(db.String(64))
@@ -97,6 +97,24 @@ class Audio(db.Model):
     def to_dict(self):
         return {c.name: getattr(self, c.name) if getattr(self, c.name) else "" for c in self.__table__.columns}
 
+class VideoCmsInfo(db.Model):
+    __tablename__ = 'VideoCmsInfo'
+    name = db.Column(db.String(64), primary_key=True)
+    isOfficial = db.Column(db.String(64))
+    resourcesNums = db.Column(db.String(64))
+    lastUpdateTime = db.Column(db.String(64))
+
+    def __init__(self, name, isOfficial, resourcesNums, lastUpdateTime):
+        self.name = name
+        self.isOfficial = isOfficial
+        self.resourcesNums = resourcesNums
+        self.lastUpdateTime = lastUpdateTime
+
+    def __repr__(self):
+        return '< VideoClassification: %s >' % self.name
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) if getattr(self, c.name) else "" for c in self.__table__.columns}
 
 def init_db(app):
     basedir = os.path.abspath(os.path.dirname(__file__))
@@ -117,6 +135,7 @@ def init_db(app):
         else:
             db.create_all()
             # print(db.engine)
+
 # def add_column(engine, table_name, column):
 #     column_name = column.compile(dialect=engine.dialect)
 #     column_type = column.type.compile(engine.dialect)

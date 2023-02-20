@@ -7,10 +7,10 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 
-let localDevApiUrl = 'http://localhost:5001'
+let localDevApiUrl = 'http://127.0.0.1:5001'
 let remoteApiUrl = 'https://xcya.cn'
 
-var realApiUrl = remoteApiUrl
+var realApiUrl = localDevApiUrl
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -66,7 +66,7 @@ export default defineConfig({
     // 自定义代理规则
     proxy: {
       '/api': {
-        target: realApiUrl, // 8.142.136.153:5001
+        target: realApiUrl, // localhost:5001
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '/api')
       },

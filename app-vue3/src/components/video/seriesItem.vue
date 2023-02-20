@@ -7,7 +7,7 @@
             <span class="px-1 text-sm">{{ "(" + String(activateindex + 1) + "/" + series.length + ")" }}</span>
             <div class="ml-auto flex items-center space-x-1 pr-2">
                 <span class="text-sm text">自动连播</span>
-                <el-switch v-model="autoPlayContinue" />
+                <el-switch v-model="autoPlayContinue" disabled/>
             </div>
         </div>
         <div style="max-height: 55vh; overflow:scroll; padding-right: .6rem;">
@@ -53,6 +53,7 @@ export default {
                 let serie = {};
                 serie.name = movieUrl.split('$')[0];
                 serie.url = movieUrl.split('$')[1];
+                serie.source = movieUrl.split('$')[2];
                 _series.push(serie)
             });
             return _series
@@ -61,7 +62,14 @@ export default {
         const changeMovie = (index) => {
             videoStore.playerOptions.poster = videoStore.videoItem.pic;
             videoStore.playerOptions.name = videoStore.videoItem.name + " " + series.value[index].name;
-            videoStore.playerOptions.src = series.value[index].url;
+            if (series.value[index].source == 'qq' ||
+                series.value[index].source == 'qiyi') {
+                videoStore.playerOptions.iframeSrc = "https://okjx.cc/?url=" + series.value[index].url;
+                videoStore.playerOptions.src = '';
+            } else {
+                videoStore.playerOptions.iframeSrc = '';
+                videoStore.playerOptions.src = series.value[index].url;
+            }
             videoStore.showing = 'player';
             videoStore.playVideo();
         }

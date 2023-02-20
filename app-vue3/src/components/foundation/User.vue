@@ -1,6 +1,6 @@
 <template>
   <div class="user-all" :class="{ headeractivate: loginShow }" style="margin-right: .6rem">
-    <img v-show="icon_show" :src="user.icon" @click="loginShow = !loginShow" class=" rounded-full" onerror="this.src='/icon/user/default.png'"/>
+    <img v-show="icon_show" :src="user.icon" @click="loginShow = !loginShow" class=" rounded-full"/>
     <uil:chat-bubble-user v-show="!icon_show" @click="loginShow = !loginShow" class="h-6 w-6 text-indigo-500" />
     <div v-show="loginShow" v-loading="logloading" @mouseleave="loginShow = false"
       class="w-full sm:w-max rounded-md bg-white bg-opacity-90 dark:bg-zinc-900 dark:bg-opacity-75 p-2 cursor-auto">
@@ -161,6 +161,7 @@ import { onMounted } from '@vue/runtime-core';
 import axios from 'axios';
 import FaceRecognition from './FaceRecognition.vue';
 import { ArrowLeft } from '@element-plus/icons-vue'
+import defaultHeadIcon from "@/assets/img/default_head_icon.png"
 
 export default {
   components: { FaceRecognition, ArrowLeft },
@@ -173,7 +174,7 @@ export default {
     const logon_show = ref(false);
     const faceid_show = ref(false);
     const face_add_back_show = ref(false);
-    const user = reactive({ id: null, name: null, passwd: null, faceid: false, icon: "/static/icon/user/default.png" });
+    const user = reactive({ id: null, name: null, passwd: null, faceid: false, icon: defaultHeadIcon });
     const userLogon = reactive({ id: null, name: null, passwd: null, faceid: false });
     const FaceRecognitionComponent = ref(null);
     const admin_show = ref(false);
@@ -209,7 +210,9 @@ export default {
           if (res.data.res) {
             user.name = res.data.user_name;
             user.faceid = res.data.faceid;
-            user.icon = res.data.icon;
+            if (import.meta.env.PROD) {
+              user.icon = _user.icon;
+            }
             icon_show.value = true;
             userloged.value = true;
             let _user = { id: user.id, name: user.name, faceid: user.faceid, icon: user.icon };
@@ -273,7 +276,7 @@ export default {
       (user.id = null),
         (user.name = null),
         (user.passwd = null),
-        (user.icon = "/static/icon/user/default.png"),
+        (user.icon = defaultHeadIcon),
         (icon_show.value = false),
         (userloged.value = false);
       localStorage.removeItem("user");
@@ -283,7 +286,9 @@ export default {
       userloged.value = true;
       user.id = _user.id;
       user.name = _user.name;
-      user.icon = _user.icon;
+      if (import.meta.env.PROD) {
+        user.icon = _user.icon;
+      }
       icon_show.value = true;
       user.faceid = true;
       localStorage.user = JSON.stringify(_user);

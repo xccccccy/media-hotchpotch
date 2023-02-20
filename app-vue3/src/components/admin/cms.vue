@@ -1,18 +1,19 @@
 <template>
     <div>
-        <!-- <el-select v-model="urlName" class="w-full my-4" placeholder="Select" size="large">
-            <el-option v-for="item in urlNames" :key="item" :label="item" :value="item" />
-        </el-select> -->
         <el-checkbox-group v-model="urlName.private" size="large" class="w-full my-4">
             <el-checkbox-button v-for="item in urlNames.private" :key="item" :label="item" :value="item">
                 {{ item }}
             </el-checkbox-button>
         </el-checkbox-group>
-        <el-checkbox-group v-model="urlName.official" size="large" class="w-full my-4 hidden">
-            <el-checkbox-button v-for="item in urlNames.official" :key="item" :label="item" :value="item">
-                {{ item }}
-            </el-checkbox-button>
-        </el-checkbox-group>
+        <div v-for="(value, key) in urlNames.official" :key="key" class="flex items-center">
+            <div class="pr-6">{{ key }}</div>
+            <el-checkbox-group v-model="urlName.official[key]" size="large" class="my-4">
+                <el-checkbox-button v-for="item in urlNames.official[key]" :key="item" :label="item" :value="item">
+                    {{ item }}
+                </el-checkbox-button>
+            </el-checkbox-group>
+        </div>
+
         <el-button @click="initDownloadVideos">初始化视频数据库</el-button>
         <el-button @click="delDownloadVideos">删除视频数据库所有数据</el-button>
     </div>
@@ -25,8 +26,8 @@ import { initVideoDatabase, initUrlNames, delAllVideos } from "../foundation/api
 export default {
     name: "CMS",
     setup() {
-        const urlName = ref({ "private": [], "official": [] })
-        const urlNames = ref({ "private": [], "official": [] })
+        const urlName = ref({ "private": [], "official": {} })
+        const urlNames = ref({ "private": [], "official": {} })
         const initUrlName = () => {
             initUrlNames()
                 .then((res) => {

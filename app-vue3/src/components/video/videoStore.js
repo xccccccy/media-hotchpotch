@@ -4,11 +4,11 @@ import { ref } from "vue"
 export const useVideoStore = defineStore('video', {
     // 开启数据缓存
     persist: {
-        enabled: true,
+        enabled: false,
         strategies: [
             {
                 key: 'videoStore', // 存储的 key 值，默认为 storeId
-                storage: localStorage, // 存储的位置，默认为 sessionStorage
+                storage: sessionStorage, // localStorage, 存储的位置，默认为 sessionStorage
                 // paths: ['showing', 'playerOptions', 'videoItem'], // 需要存储的 state 状态，默认存储所有的状态
             }
         ]
@@ -23,6 +23,7 @@ export const useVideoStore = defineStore('video', {
             volume: 0.6,
             poster: '/1.jpg',
             src: '',
+            iframeSrc: '',
             name: 'something',
             currentTime: 0,
             duration: 0,

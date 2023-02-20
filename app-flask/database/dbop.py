@@ -3,7 +3,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(basedir)
 
-from db import db, init_db, User, Bookshelf, Audio
+from db import db, init_db, User, Bookshelf, Video, VideoCmsInfo
 from flask import Flask, current_app, session
 from sqlalchemy import or_,and_
 
@@ -115,12 +115,16 @@ def updateBookshelf(user_id, _bookshelf):
             return {'res': False, 'context': "不存在该id相关用户。"}
 
 
-def insertVideo(id, name, type, classification, lastTime, pic, url, lang, area, year, actor, director, des, source):
+def insertVideo(id, name, type, classification, lastTime, pic, url, lang, area, year, note, actor, director, des, source):
     with app.app_context():
         try:
-            audio = Audio(id, name, type, classification, lastTime,
-                          pic, url, lang, area, year, actor, director, des, source)
-            db.session.add(audio)
+            video = Video.query.get(id)
+            if video:
+                video_dict = dict(zip(["id", "name", "type", "classification", "lastTime", "pic", "url", "lang", "area", "year", "note", "actor", "director", "des", "source"], [id, name, type, classification, lastTime, pic, url, lang, area, year, note, actor, director, des, source]))
+                _updateVideo(video, video_dict)
+            else:
+                video = Video(id, name, type, classification, lastTime, pic, url, lang, area, year, note, actor, director, des, source)
+                db.session.add(video)
             db.session.commit()
             return {'res': True}
         except Exception as r:
@@ -128,15 +132,20 @@ def insertVideo(id, name, type, classification, lastTime, pic, url, lang, area, 
             return {'res': False, 'context': "已经存在该id。"}
 
 
+def _updateVideo(video, videoData):
+    video.name, video.type, video.classification, video.lastTime, video.pic, video.url, video.lang, video.area, video.year, video.note, video.actor, video.director, video.des, video.source = videoData['name'], videoData['type'], videoData['classification'], videoData['lastTime'], videoData['pic'], videoData['url'], videoData['lang'], videoData['area'], videoData['year'], videoData['note'], videoData['actor'], videoData['director'], videoData['des'], videoData['source']
+
 def insertVideos(VideoDatas):
     with app.app_context():
         try:
             for videoData in VideoDatas:
-                id, name, type, classification, lastTime, pic, url, lang, area, year, note, actor, director, des, source = videoData['id'], videoData['name'], videoData['type'], videoData['classification'], videoData[
-                    'lastTime'], videoData['pic'], videoData['url'], videoData['lang'], videoData['area'], videoData['year'], videoData['note'], videoData['actor'], videoData['director'], videoData['des'], videoData['source']
-                audio = Audio(id, name, type, classification, lastTime,
-                              pic, url, lang, area, year, note, actor, director, des, source)
-                db.session.add(audio)
+                video = Video.query.get(videoData['id'])
+                if video:
+                    _updateVideo(video, videoData)
+                else:
+                    id, name, type, classification, lastTime, pic, url, lang, area, year, note, actor, director, des, source = videoData['id'], videoData['name'], videoData['type'], videoData['classification'], videoData['lastTime'], videoData['pic'], videoData['url'], videoData['lang'], videoData['area'], videoData['year'], videoData['note'], videoData['actor'], videoData['director'], videoData['des'], videoData['source']
+                    video = Video(id, name, type, classification, lastTime, pic, url, lang, area, year, note, actor, director, des, source)
+                    db.session.add(video)
             db.session.commit()
             return {'res': True}
         except Exception as r:
@@ -147,7 +156,7 @@ def insertVideos(VideoDatas):
 def delAllVideos():
     with app.app_context():
         try:
-            db.session.query(Audio).delete()
+            db.session.query(Video).delete()
             db.session.commit()
             return {'res': True}
         except Exception as r:
@@ -160,20 +169,48 @@ def searchVideo(searchString):
         try:
             video_filter = {
                 or_(
-                    Audio.name == searchString,
-                    Audio.name.ilike(f'%{searchString}%'),
-                    Audio.actor.ilike(f'%{searchString}%')
+                    Video.name.ilike(f'%{searchString}%'),
+                    Video.actor.ilike(f'%{searchString}%')
                 )
             }
-            objs = Audio.query.filter(*video_filter).all()
-            objs = list(map(lambda x: x.to_dict(),objs))[:100]
+            objs = Video.query.filter(*video_filter).all()
+            objs = list(map(lambda x: x.to_dict(),objs))
+            objs = sorted(objs, key=lambda x:((x["name"].index(searchString) if x["name"] != searchString else -1) if searchString in x["name"] else x["actor"].index(searchString), (len(x["name"]) if x["name"].index(searchString) == 0 else x["name"].index(searchString)) if searchString in x["name"] else x["actor"].index(searchString)))[:50]
             return {'res': True, 'videos': objs}
         except Exception as r:
             print('错误:  %s' % (r))
             return {'res': False, 'context': "出现错误。"}
 
+
+
+def insertVideoCmsInfo(videoCmsInfoDict):
+     with app.app_context():
+        try:
+            videoCmsInfo = VideoCmsInfo.query.get(videoCmsInfoDict["name"])
+            if videoCmsInfo:
+                videoCmsInfo.name, videoCmsInfo.isOfficial, videoCmsInfo.resourcesNums, videoCmsInfo.lastUpdateTime = videoCmsInfoDict["name"], videoCmsInfoDict["isOfficial"], videoCmsInfoDict["resourcesNums"], videoCmsInfoDict["lastUpdateTime"]
+            else:
+                videoCmsInfo = VideoCmsInfo(videoCmsInfoDict["name"], videoCmsInfoDict["isOfficial"], videoCmsInfoDict["resourcesNums"], videoCmsInfoDict["lastUpdateTime"])
+                db.session.add(videoCmsInfo)
+            db.session.commit()
+            return {'res': True}
+        except Exception as r:
+            print('错误: %s' % (r))
+            return {'res': False, 'context': "发生未知错误"}
+
+
+def getAllVideoCmsInfo():
+    with app.app_context():
+        try:
+            objs = VideoCmsInfo.query.all()
+            objs = list(map(lambda x: x.to_dict(), objs))[:100]
+            return {'res': True, 'videoCmsInfos': objs}
+        except Exception as r:
+            print('错误: %s' % (r))
+            return {'res': False, 'context': "发生未知错误"}
+
 if __name__ == "__main__":
     app=Flask('11')
     init_database(app)
-    print(searchVideo('一年一度')['videos'])
+    print(searchVideo("功夫"))
     # app.run(debug=True, host='0.0.0.0', port=5002)

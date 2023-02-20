@@ -30,10 +30,11 @@ def initCmsRoute(app):
             cmsUrlNames = request.json['cmsUrlName']
             print(cmsUrlNames)
             for privateUrlName in cmsUrlNames["private"]:
-                get_all_video(cmsUrl["private"][privateUrlName])
-            for officialUrlName in cmsUrlNames["official"]:
-                continue
-                get_all_video(cmsUrl["official"]["云解析资源"][officialUrlName])
+                get_all_video(cmsUrl["private"][privateUrlName], "private", privateUrlName)
+            if type(cmsUrlNames["official"]) == dict:
+                for officialUrlName, officialUrlSiteNameList in cmsUrlNames["official"].items():
+                    for officialUrlSiteName in officialUrlSiteNameList:
+                        get_all_video(cmsUrl["official"][officialUrlName][officialUrlSiteName], "official", officialUrlName + "-" + officialUrlSiteName)
             return make_response('YES')
         else:
             return make_response('NO', 403)
@@ -44,7 +45,7 @@ def initCmsRoute(app):
             return make_response({ 
                 "data": {
                     "private": list(cmsUrl["private"].keys()),
-                    "official": list(cmsUrl["official"]["云解析资源"].keys()),
+                    "official": dict(zip(list(cmsUrl["official"].keys()), [list(v.keys()) for k, v in cmsUrl["official"].items()])),
                 }})
         else:
             return make_response('NO', 403)
@@ -54,5 +55,13 @@ def initCmsRoute(app):
         if session.get('admin') or session.get('token'):
             dbop.delAllVideos()
             return make_response("YES")
+        else:
+            return make_response('NO', 403)
+
+    @app.route(_CMSAPI + '/get/allcmsinfos', methods=['GET', 'POST'])
+    def getAllVideoCmsInfos():
+        if session.get('admin') or session.get('token'):
+            result = dbop.getAllVideoCmsInfo()
+            return make_response(result)
         else:
             return make_response('NO', 403)
