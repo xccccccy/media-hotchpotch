@@ -1,6 +1,6 @@
 <template>
-    <div class="app w-full sm:w-3/4 2xl:w-2/3">
-        <div class="search-two">
+    <div class="app w-full sm:w-3/4 2xl:w-2/3 pt-12 lg:pt-16">
+        <div class="my-3 px-1">
             <el-input v-model="search_string" placeholder="搜索书籍。" class="input-with-select" @keyup.enter="searchbook()"
                 size="large">
                 <template #suffix>
@@ -14,7 +14,7 @@
             <div class="list-title">
                 <span>我的书架</span>
             </div>
-            <el-row class="justify-evenly">
+            <el-row class="justify-between">
                 <bookshelfbox v-for="book in bookshelf" :key="book.book_id" :book="book" @delBook="delbook">
                 </bookshelfbox>
             </el-row>
@@ -146,6 +146,7 @@ export default {
         },
         searchbook(s) {
             let search_s = s || this.search_string;
+            this.search_string = search_s;
             this.searchloading = true;
             this.search_info = "正在搜索中...";
             this.bookshelf_show = false;
@@ -165,7 +166,7 @@ export default {
                             search_s +
                             '</b>"相关的书籍，共' +
                             this.search_books.length +
-                            "本。（最多显示100本）";
+                            "本。";
                     } else {
                         this.search_info =
                             '😭 暂未找到与"<b>' + search_s + '</b>"相关的书籍。';
@@ -294,14 +295,6 @@ export default {
 
 .el-input__icon {
     color: #4642c5;
-    font-size: 1.3rem;
-}
-
-.search-two {
-    margin: 1rem auto;
-}
-
-.search-two .el-input__icon {
     font-size: 1.5rem;
     cursor: pointer;
 }

@@ -64,7 +64,10 @@ def book_allinfo(book_id):
     book_info = book_bsobj.find('div', {'class': 'info'})
     book_name = book_info.find('h1').getText()
     book_img_url = book_info.find('img').get('src')
-    book_author = book_info.find('div', {'class': 'small'}).find('span').getText()[3:]
+    book_author = book_info.find('div', {'class': 'small'}).find_all('span')[0].getText()[3:]
+    book_state = book_info.find('div', {'class': 'small'}).find_all('span')[1].getText()[3:]
+    book_last_update_time = book_info.find('div', {'class': 'small'}).find_all('span')[2].getText()[3:]
+    book_last_catalogue_text = book_info.find('div', {'class': 'small'}).find_all('span')[3].getText()[3:]
     book_resume = book_info.find('div', {'class': 'intro'}).getText()[7:]
     if book_resume[-8:] == ' 展开全部>> ':
         book_resume = book_info.find('div', {'class': 'intro'}).getText()[7:-8]
@@ -73,6 +76,9 @@ def book_allinfo(book_id):
     info_dict['book_name'] = book_name
     info_dict['book_img_url'] = book_img_url
     info_dict['book_author'] = book_author
+    info_dict['book_state'] = book_state
+    info_dict['book_last_update_time'] = book_last_update_time
+    info_dict['book_last_catalogue_text'] = book_last_catalogue_text
     info_dict['book_resume'] = book_resume
     info_dict['book_id'] = book_id
     return info_dict

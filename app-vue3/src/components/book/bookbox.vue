@@ -2,7 +2,7 @@
   <el-col
     :md="24"
     :lg="11"
-    class="dark-transition border-2 border-white border-opacity-50 shadow-2xl dark:shadow-none dark:border-0 dark:border-opacity-0 bg-white dark:bg-slate-800 rounded-md backdrop-filter bg-opacity-50 dark:bg-opacity-50 mb-4 mr-4"
+    class="dark-transition border-2 border-white border-opacity-50 shadow-2xl dark:shadow-none dark:border-0 dark:border-opacity-0 bg-white dark:bg-zinc-800 rounded-md backdrop-filter bg-opacity-50 dark:bg-opacity-50 mb-4 mr-4"
   >
     <el-row
       class="bookbox"

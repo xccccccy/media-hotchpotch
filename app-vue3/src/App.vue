@@ -1,7 +1,7 @@
 <template>
     <Header :headerSetting="headerStore.headerSetting"></Header>
-    <BackGround></BackGround>
-    <router-view class="root pt-14" />
+    <BackGround class="hidden sm:block"></BackGround>
+    <router-view class="root" />
     <Footer></Footer>
 </template>
 
