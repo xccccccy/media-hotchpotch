@@ -32,7 +32,7 @@ def get_video_list(cmsUrl, pagecount, cmsType, urlName):
     global allcount
     with tqdm(total=int(allcount)) as pbar:
         pbar.set_description('当前影片数量：')
-        with ThreadPoolExecutor(100) as t:
+        with ThreadPoolExecutor(50) as t:
             for pg in range(int(pagecount), 0, -1):
                 t.submit(get_video_and_insert, cmsUrl, pg, pbar, cmsType)
         videoCmsInfoDict = {}
