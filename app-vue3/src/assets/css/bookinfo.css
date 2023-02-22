@@ -4,8 +4,7 @@
 }
 
 .resume {
-    text-indent: 2rem;
-    line-height: 1.75;
+    line-height: 1.6;
     display: -webkit-box;
     overflow: hidden;
     -webkit-box-orient: vertical;

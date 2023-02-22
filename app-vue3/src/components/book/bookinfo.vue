@@ -1,7 +1,7 @@
 <template>
   <div class="w-full bookinfo-back z-0">
     <div v-loading="!bookboxshow" class="bg-zinc-100 dark:bg-neutral-800 pb-8" style="min-height: 100vh;">
-      <div class="bg-white dark:bg-zinc-800 pt-12 sm:pt-14">
+      <div class="bg-white dark:bg-zinc-900 pt-12 sm:pt-14">
         <div class="flex m-3 w-full sm:w-2/3 mx-auto pb-1 sm:pb-6 px-2">
           <img class="w-36 sm:w-56 rounded-md" style="aspect-ratio: 166/242;" :src="book.book_img_url"
             :alt="book.book_name" />
@@ -25,23 +25,23 @@
         </div>
         <div class="h-px bg-gradient-to-r from-yellow-500 via-pink-500 to-cyan-500 w-full"></div>
       </div>
-      <div class="w-full sm:w-2/3 mx-auto mt-3 sm:mt-8 bg-white dark:bg-zinc-800 shadow-2xl">
+      <div class="w-full sm:w-2/3 mx-auto mt-3 sm:mt-8 bg-white dark:bg-zinc-900 shadow-2xl dark:shadow-zinc-700">
         <div class="block sm:block ">
-          <h3 class="text-2xl font-bold mx-4 sm:mx-8 p-3 sm:pt-8 border-b border-black dark:border-white border-opacity-20 dark:border-opacity-20 text-left">作品简介</h3>
-          <div class="resume mx-6 sm:mx-12 my-4 sm:my-10 text-lg">{{ book.book_resume }}</div>
+          <h3 class="text-lg sm:text-2xl font-bold mx-4 sm:mx-8 p-1 pt-4 sm:pt-8 sm:border-b border-black dark:border-white border-opacity-10 dark:border-opacity-10 text-left">作品简介</h3>
+          <div class="resume mx-6 sm:mx-12 mt-2 mb-4 sm:my-10 text-lg">{{ book.book_resume }}</div>
         </div>
-        <div class=" border-b border-black dark:border-white border-opacity-20 dark:border-opacity-20 mx-4 sm:mx-8 pb-3 pt-4 sm:pt-8 flex justify-between items-center">
-          <h3 class="text-2xl font-bold px-3">
+        <div class="sm:border-b border-black dark:border-white border-opacity-10 dark:border-opacity-10 mx-2 sm:mx-8 sm:pb-3 pt-4 sm:pt-8 flex justify-between items-center">
+          <h3 class="text-lg sm:text-2xl font-bold px-3">
             <span>目录</span>
             <span class="directory-dot bg-black dark:bg-white"></span>
             <span>{{ book.catalogue_text_list.length }}章</span>
           </h3>
-          <h3 class="px-4 text-xl font-medium cursor-pointer" @click="changeOrder">
+          <h3 class="px-4 sm:text-xl font-medium cursor-pointer" @click="changeOrder">
             <span>{{ order ? "顺序" : "倒序" }}</span>
             <Reverse class="mx-1 inline-block text-sm"></Reverse>
           </h3>
         </div>
-        <div class="book-catalogue-list m-5 sm:m-10 mb-0 mt-4 sm:mt-8">
+        <div class="book-catalogue-list m-5 sm:m-10 mb-0 mt-2 sm:mt-8">
           <cataloguebox v-for="(catalogue_text, index) in catalogue_text_list" key="index"
             :id="'catalogue_' + Number(order ? index + 1 : catalogue_text_list.length - index)" :catalogue_text="catalogue_text" :index="order ? index : catalogue_text_list.length - index - 1"
             :catalogue_href="book.catalogue_href_list[index]" :book_id="book.book_id"></cataloguebox>
