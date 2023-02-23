@@ -20,12 +20,12 @@
             </el-row>
         </div>
         <div class="book-list" v-if="bookbox_list_show">
-            <div class="list-title">
+            <div class="list-title" v-show="search_info.length != 0">
                 <span v-html="search_info"></span>
             </div>
-            <el-row class="type_show" v-loading="searchloading">
+            <div class="type_show" v-loading="searchloading">
                 <bookbox v-for="book in search_books" :key="book.book_id" :book="book"></bookbox>
-            </el-row>
+            </div>
         </div>
         <div class="book-list shang-list" v-if="shang_show">
             <div class="shang flex-col xl:flex-row">
@@ -168,12 +168,7 @@ export default {
                     (document.title = "'" + search_s + "'" + "的搜索结果"),
                         (this.search_books = res.data.data);
                     if (this.search_books.length) {
-                        this.search_info =
-                            '😁 搜索到与"<b>' +
-                            search_s +
-                            '</b>"相关的书籍，共' +
-                            this.search_books.length +
-                            "本";
+                        this.search_info ='';
                     } else {
                         this.search_info =
                             '😭 暂未找到与"<b>' + search_s + '</b>"相关的书籍';
