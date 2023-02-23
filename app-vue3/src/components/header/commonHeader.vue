@@ -1,5 +1,5 @@
 <template>
-    <div @click="headerSetting.clickHandle" :class="headerSetting.class" class="self-stretch">
+    <div @click="headerSetting.clickHandle" :class="headerSetting.class" class="mx-2 sm:mx-6">
         <component :is="headerSetting.iconSetting" class="h-6 w-6 text-indigo-600"/>
         <span :style="headerSetting.style">{{ headerSetting.headerString }}</span>
     </div>
@@ -40,14 +40,4 @@ export default {
 </script>
 
 <style scoped>
-.home {
-    margin-left: .6rem;
-    margin-right: auto !important;
-}
-
-.home a {
-    font-size: 1.5rem;
-    font-weight: 500;
-    vertical-align: middle;
-}
 </style>

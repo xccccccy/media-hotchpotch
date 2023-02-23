@@ -1,5 +1,5 @@
 <template>
-    <div class="app w-full sm:w-3/4 2xl:w-2/3 pt-12 lg:pt-16">
+    <div class="app w-full sm:w-3/4 2xl:w-2/3 pt-16 lg:pt-20">
         <div class="my-3 px-1">
             <el-input v-model="search_string" placeholder="搜索书籍。" class="input-with-select" @keyup.enter="searchbook()"
                 size="large">
@@ -102,7 +102,8 @@ export default {
                             {
                                 type: 'search',
                                 placeholder: "搜索书籍。",
-                                clickHandle: this.searchbook
+                                clickHandle: this.searchbook,
+                                position: "right"
                             },
                             // {
                             //     type: 'common',
@@ -110,6 +111,12 @@ export default {
                             //     iconSetting: markRaw(CarbonSearch),
                             //     clickHandle: this.back_search
                             // },
+                            {
+                                type: 'common',
+                                headerString: '首页',
+                                // iconSetting: markRaw(CarbonBook),
+                                clickHandle: this.backbookshelf
+                            },
                             {
                                 type: 'common',
                                 headerString: '书架',
@@ -121,7 +128,7 @@ export default {
                                 headerString: 'Shǎng',
                                 // iconSetting: markRaw(notoMoneyBag),
                                 clickHandle: this.shangqian,
-                                style: "font-weight: 500; color: #CD9D02"
+                                style: "color: #CD9D02"
                             }
                         ],
                     userSetting: {
@@ -166,10 +173,10 @@ export default {
                             search_s +
                             '</b>"相关的书籍，共' +
                             this.search_books.length +
-                            "本。";
+                            "本";
                     } else {
                         this.search_info =
-                            '😭 暂未找到与"<b>' + search_s + '</b>"相关的书籍。';
+                            '😭 暂未找到与"<b>' + search_s + '</b>"相关的书籍';
                     }
                 })
                 .catch((err) => {

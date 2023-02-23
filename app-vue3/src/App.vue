@@ -1,6 +1,6 @@
 <template>
     <Header :headerSetting="headerStore.headerSetting"></Header>
-    <BackGround class="hidden sm:block"></BackGround>
+    <BackGround class="hidden"></BackGround>
     <router-view class="root" />
     <Footer></Footer>
 </template>

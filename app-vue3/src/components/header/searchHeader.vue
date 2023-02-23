@@ -1,19 +1,15 @@
 <template>
-    <div class="search hidden sm:flex my-1 w-full sm:w-1/2 lg:w-1/3 xl:w-1/4">
-        <el-input v-model="search_string" :placeholder="headerSetting.placeholder" class="input-with-select"
-            @keyup.enter="headerSetting.clickHandle(search_string)" >
-            <template #suffix>
-                <el-icon class="el-input__icon" @click="headerSetting.clickHandle(search_string)">
-                    <Search />
-                </el-icon>
-            </template>
-        </el-input>
+    <div class="search hidden sm:flex sm:w-1/2 lg:w-1/3 xl:w-1/4 mx-4">
+        <div class="muye-header-search bg-zinc-50 dark:bg-zinc-600">
+            <input v-model="search_string" :placeholder="headerSetting.placeholder" @keyup.enter="headerSetting.clickHandle(search_string)">
+            <Search class="search-icon text-zinc-900 dark:text-zinc-400" @click="headerSetting.clickHandle(search_string)"></Search>
+        </div>
     </div>
 </template>
 
 <script>
 import { ref } from 'vue'
-import { Search } from '@element-plus/icons-vue'
+import Search from '~icons/uil/search'
 
 export default {
     name: "HomeHeader",
@@ -21,19 +17,11 @@ export default {
     props: {
         headerSetting: {
             type: Object
-        },
-        homeString: {
-            type: String,
-            default: 'Home'
-        },
-        homeHref: {
-            type: String,
-            default: '/'
         }
     },
     setup() {
 
-        const search_string = ref('')
+        const search_string = ref('问我')
 
         return { search_string };
     }
@@ -42,18 +30,34 @@ export default {
 </script>
 
 <style scoped>
+.muye-header-search {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    width: 100%;
+    border-radius: 17px;
+    padding: 5px 48px 7px 16px;
+}
+
+.muye-header-search input {
+    border: 0;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    background: #fafafa00;
+}
+
+.muye-header-search .search-icon {
+    font-size: 17px;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
 .search:hover {
-    background: none !important;
     border-bottom: none !important;
-}
-
-.input-with-select {
-    opacity: 0.9;
-    color: #000;
-}
-
-.el-input__icon {
-    color: #4642c5;
-    font-size: 1.3rem;
 }
 </style>

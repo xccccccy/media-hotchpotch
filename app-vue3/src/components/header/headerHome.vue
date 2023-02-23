@@ -1,5 +1,5 @@
 <template>
-    <div class="home" @click="$router.push(homeSetting.homeHref)">
+    <div class="home ml-1 mr-4 sm:mr-16 py-2 sm:py-4" @click="$router.push(homeSetting.homeHref)">
         <fluent-emoji:astronaut-medium-light class="h-6 w-6 m-1"/>
         <a class="bg-clip-text linear-gradient inverse text-fill-transparent">{{ homeSetting.homeString }}</a>
     </div>
@@ -26,11 +26,6 @@ export default {
 </script>
 
 <style scoped>
-.home {
-    margin-left: .2rem;
-    margin-right: auto !important;
-}
-
 .home a {
     font-size: 1.3rem;
     font-weight: 500;

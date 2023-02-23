@@ -1,15 +1,16 @@
 <template>
-    <div v-show="!isHidden" class="fixed top-0 left-0 header-container bg-slate-200 bg-opacity-50 dark:bg-zinc-900 dark:bg-opacity-50 shadow dark:shadow-zinc-800">
-        <div class="header space-x-0.5 sm:space-x-2 w-full mx-auto">
+    <div v-show="!isHidden"
+        class="fixed top-0 left-0 header-container bg-slate-200 bg-opacity-50 dark:bg-zinc-900 dark:bg-opacity-50 shadow dark:shadow-zinc-800">
+        <div class="header w-full sm:w-2/3 mx-auto">
             <HeaderHome :homeSetting="homeSetting"></HeaderHome>
-            <component v-for="(headerSetting, index) in headerSettings" :is="headers[headerSetting.type]"
-                v-show="!headerSetting.hidden" @click="activateHeaderOfIndex(index)" :key="index"
+            <component v-for="(headerSetting, index) in leftHeaderSettings" :is="headers[headerSetting.type]"
+                v-show="!headerSetting.hidden" @click="activateHeaderOfIndex(index, headerSetting.type)" :key="index"
                 :class="{ headeractivate: headeractivate[index] }" :headerSetting="headerSetting"></component>
-            <div v-show="headerSettings.length > 0" class="h-3 w-px bg-current ml-6 mr-2" style="padding: 0 !important; margin-left: 1rem !important; margin-right: 0.5rem !important;">
-
-            </div>
-            <DrakMode @darkModeChange="darkModeChange"></DrakMode>
-            <User @userLog="userLog"></User>
+            <div style="margin-left: auto;"></div>
+            <component v-for="(headerSetting, index) in rightHeaderSettings" :is="headers[headerSetting.type]"
+                v-show="!headerSetting.hidden" :key="index" :headerSetting="headerSetting"></component>
+            <DrakMode @darkModeChange="darkModeChange" class="mx-3"></DrakMode>
+            <User @userLog="userLog" class="mx-3"></User>
         </div>
     </div>
 </template>
@@ -60,13 +61,14 @@ export default {
                 return props.headerSetting.headerSettings
             }
             return []
-            // [
+            // // [
             //     {
             //         type: 'search',
             //         placeholder: "搜索书籍。",
             //         clickHandle: (search_string) => {
             //             console.log('asdfgh', search_string)
-            //         }
+            //         },
+            //         position: "right" 
             //     },
             //     {
             //         type: 'common',
@@ -92,19 +94,29 @@ export default {
             // ]
         })
 
-        let initHeaderActivate = {}
-        for (let i = 0; i < headerSettings.value.length; i++) {
-            if (headerSettings.value[i].type == 'common') {
-                initHeaderActivate[i] = false
-            }
-        }
-        const headeractivate = reactive(initHeaderActivate)
+        const headeractivate = reactive({})
 
-        const activateHeaderOfIndex = (index) => {
-            for (let key in initHeaderActivate) {
+        const rightHeaderSettings = computed(() => {
+            let headerSettings = props.headerSetting.headerSettings ? props.headerSetting.headerSettings : []
+            return headerSettings.filter((value) => value.position == "right")
+        })
+
+        let activeFlag = true;
+        const leftHeaderSettings = computed(() => {
+            let headerSettings = props.headerSetting.headerSettings ? props.headerSetting.headerSettings : []
+            let leftHeaders = headerSettings.filter((value) => value.position != "right")
+            if (leftHeaders.length && activeFlag) { 
+                activeFlag = false;
+                activateHeaderOfIndex(0, leftHeaders[0].type);
+             }
+            return headerSettings.filter((value) => value.position != "right")
+        })
+
+        const activateHeaderOfIndex = (index, type) => {
+            for (let key in headeractivate) {
                 headeractivate[key] = false
             }
-            if (headerSettings.value[index].type != 'common') return;
+            if (type != 'common') return;
             headeractivate[index] = true
         }
 
@@ -126,7 +138,7 @@ export default {
             }
         })
 
-        return { homeSetting, headerSettings, headers, activateHeaderOfIndex, headeractivate, userLog, darkModeChange, isHidden };
+        return { homeSetting, headerSettings, leftHeaderSettings, rightHeaderSettings, headers, activateHeaderOfIndex, headeractivate, userLog, darkModeChange, isHidden };
     },
     components: { DrakMode, User, HeaderHome }
 }
@@ -134,7 +146,6 @@ export default {
 </script>
 
 <style scoped>
-
 .header-container {
     /* position: fixed;
     top: 0;
@@ -147,22 +158,21 @@ export default {
 
 .header {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
 }
 
 .header>div {
-    padding: 0.3rem 0.5rem;
     cursor: pointer;
     display: flex;
     align-items: center;
 }
 
 .header>div:hover {
-    border-bottom: 1px solid rgb(218, 175, 0);
+    /* padding-bottom: calc(0.3rem - 2px); */
+    border-bottom: 2px solid rgb(218, 175, 0);
 }
 
 .headeractivate {
-    border-bottom: 1px solid rgb(20, 175, 103);
+    font-weight: 700 !important;
+    border-bottom: 2px solid rgb(20, 175, 103);
 }
 </style>
