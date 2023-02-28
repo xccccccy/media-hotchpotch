@@ -1,16 +1,16 @@
 <template>
     <div v-show="!isHidden"
         class="fixed top-0 left-0 header-container bg-slate-200 bg-opacity-50 dark:bg-zinc-900 dark:bg-opacity-50 shadow dark:shadow-zinc-800">
-        <div class="header w-full sm:w-2/3 mx-auto">
+        <div class="header w-full sm:w-3/4 2xl:w-2/3 mx-auto">
             <HeaderHome :homeSetting="homeSetting"></HeaderHome>
-            <component v-for="(headerSetting, index) in leftHeaderSettings" :is="headers[headerSetting.type]"
+            <component v-for="(headerSetting, index) in leftHeaderSettings" :is="headers[headerSetting.type]" class=" py-2 sm:py-4 min-w-fit flex"
                 v-show="!headerSetting.hidden" @click="activateHeaderOfIndex(index, headerSetting.type)" :key="index"
                 :class="{ headeractivate: headeractivate[index] }" :headerSetting="headerSetting"></component>
             <div style="margin-left: auto;"></div>
-            <component v-for="(headerSetting, index) in rightHeaderSettings" :is="headers[headerSetting.type]"
+            <component v-for="(headerSetting, index) in rightHeaderSettings" :is="headers[headerSetting.type]" class="flex"
                 v-show="!headerSetting.hidden" :key="index" :headerSetting="headerSetting"></component>
-            <DrakMode @darkModeChange="darkModeChange" class="mx-3"></DrakMode>
-            <User @userLog="userLog" class="mx-3"></User>
+            <DrakMode @darkModeChange="darkModeChange" class="mx-3 flex"></DrakMode>
+            <User @userLog="userLog" class="mx-3 flex"></User>
         </div>
     </div>
 </template>
@@ -162,7 +162,6 @@ export default {
 
 .header>div {
     cursor: pointer;
-    display: flex;
     align-items: center;
 }
 

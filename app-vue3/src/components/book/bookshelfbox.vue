@@ -1,43 +1,32 @@
 <template>
-  <el-col :md="24" :lg="11"
-    class="dark-transition rounded-md shadow-lg dark:shadow-none bg-gray-100 dark:bg-zinc-800 backdrop-filter bg-opacity-50 dark:bg-opacity-50 mr-4 mb-6">
-    <el-row class="bookbox" @mouseenter="bottom_bar_hover = true" @mouseleave="bottom_bar_hover = false">
-      <el-col class="bookimg" :span="8">
-        <img
-          :src="book.img_url"
-          :alt="book.name"
-          @click="$router.push('/book/' + book.book_id)"
-          loading="lazy"
-          class="cursor-pointer"
-        />
-      </el-col>
-      <el-col class="bookinfo" :span="14">
-        <div class="bookname">
-          <span @click="$router.push('/book/' + book.book_id)">{{ book.name }}</span>
+  <div class="mb-2 sm:mb-6 p-4">
+    <div class="w-full sm:w-80 h-40 sm:h-32 relative">
+      <div class="w-32 sm:w-24 h-40 sm:h-32 float-left relative cursor-pointer"
+        @click="$router.push('/book/' + book.book_id)">
+        <div class="book-shadow"></div>
+        <img :src="book.img_url" :alt="book.name" loading="lazy" class="rounded w-full h-full" />
+      </div>
+      <div class="ml-36 sm:ml-28 text-left h-40 sm:h-32">
+        <div class="cursor-pointer font-semibold book-name hover:text-orange-500 text-lg sm:text-base"
+          @click="$router.push('/book/' + book.book_id)">{{
+            book.name }}</div>
+        <div class="text-base sm:text-tiny mt-6 sm:mt-3">作者：{{ book.author }}</div>
+        <div class="text-base sm:text-tiny mt-2 sm:mt-1 max-one">上次读到：{{ book.catalogue_name }}</div>
+        <div class="mt-4 sm:mt-3 flex">
+          <button class="mybtn min-w-fit"
+            @click="$router.push('/book/' + book.book_id + '/' + book.catalogue_id)">继续阅读</button>
+          <button class="mybtn min-w-fit" @click="$router.push('/book/' + book.book_id)">查看目录</button>
         </div>
-        <div class="author">作者：{{ book.author }}</div>
-        <div class="lastread">上次读到：{{ book.catalogue_name }}</div>
-        <div>
-          <el-row>
-            <button class="mybtn" @click="$router.push('/book/' + book.book_id + '/' + book.catalogue_id)">继续阅读</button>
-            <button class="mybtn" @click="$router.push('/book/' + book.book_id)">目录</button>
-          </el-row>
-        </div>
-      </el-col>
-      <el-col class="del_cont" :span="2">
-        <div @click="$emit('delBook', book.book_id)" class="del">
-          <svg viewBox="0 0 1024 1024" class="dark:fill-white hover:fill-red-700">
-            <path
-              d="M548.2496 512L857.7024 202.3424a25.6 25.6 0 1 0-36.2496-36.2496L512 475.7504 202.3424 166.2976a25.6 25.6 0 0 0-36.0448 36.0448L475.7504 512 166.2976 821.6576a25.6 25.6 0 1 0 36.2496 36.2496L512 548.2496l309.6576 309.4528a25.6 25.6 0 0 0 36.2496-36.2496z"
-              p-id="72105" />
-          </svg>
-        </div>
-      </el-col>
-    </el-row>
-    <div class="h-0.5 bg-gradient-to-r from-yellow-500 via-pink-500 to-cyan-500"
-      :class="{ 'w-full': bottom_bar_hover, 'w-0': !bottom_bar_hover }" style="transition: width 0.1s ease-in-out 0s;">
+      </div>
+      <div @click="$emit('delBook', book.book_id)" class="del absolute right-0 top-0">
+        <svg viewBox="0 0 1024 1024" class="dark:fill-white hover:fill-red-700">
+          <path
+            d="M548.2496 512L857.7024 202.3424a25.6 25.6 0 1 0-36.2496-36.2496L512 475.7504 202.3424 166.2976a25.6 25.6 0 0 0-36.0448 36.0448L475.7504 512 166.2976 821.6576a25.6 25.6 0 1 0 36.2496 36.2496L512 548.2496l309.6576 309.4528a25.6 25.6 0 0 0 36.2496-36.2496z"
+            p-id="72105" />
+        </svg>
+      </div>
     </div>
-  </el-col>
+  </div>
 </template>
 
 <script>
@@ -45,7 +34,7 @@ export default {
   name: "bookshelfbox",
   data() {
     return {
-      bottom_bar_hover: false,
+
     }
   },
   props: ["book"],
@@ -59,38 +48,6 @@ export default {
 </script>
 
 <style scoped>
-.bookbox {
-  animation: fadeInDown 0.5s;
-}
-
-.bookbox>div {
-  padding: 0.5rem;
-}
-
-.bookimg img {
-  border: none;
-  border-radius: .6rem;
-  width: 100%;
-  cursor: pointer;
-  aspect-ratio: 3 / 4;
-}
-
-.bookinfo {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-.bookname span {
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.del_cont {
-  align-self: flex-start;
-}
-
 .del {
   line-height: 0;
   cursor: pointer;
@@ -107,5 +64,15 @@ export default {
 
 .el-button:hover {
   background-color: #626aef;
+}
+
+.max-one {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  -webkit-line-clamp: 1;
 }
 </style>

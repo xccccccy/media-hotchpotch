@@ -1,7 +1,7 @@
 <template>
     <div class="app w-full pt-0 sm:pt-14" :style="{ background: setting.currentbjcolor }">
         <div id="box" :style="{ background: setting.currentskin[1] }"
-            class="w-full sm:w-2/3 mb-0 sm:mb-12 mt-0 sm:mt-14 rounded-none sm:rounded-lg" v-loading="contentloading">
+            class="w-full sm:w-3/4 2xl:w-2/3 mb-0 sm:mb-12 mt-0 sm:mt-14 rounded-none sm:rounded-lg" v-loading="contentloading">
             <div class="bookbox" v-show="bookboxshow" :style="{ color: setting.currentskin[0] }">
                 <div class="navigate">
                     <a @click="$router.push('/book')">主页</a>

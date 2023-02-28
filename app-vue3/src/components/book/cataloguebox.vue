@@ -1,5 +1,5 @@
 <template>
-  <div class="cataloguebox px-1 py-3 sm:p-3 w-full sm:w-1/3 border-b border-black dark:border-white border-opacity-5 dark:border-opacity-5 sm:border-none">
+  <div class="cataloguebox px-1 py-3 sm:p-3 w-full sm:w-1/3 border-b sm:border-none border-black dark:border-white border-opacity-5 dark:border-opacity-5">
     <div class="catalogue">
       <a @click="$router.push('/book/' + book_id + '/' + String(index + 1))">{{ catalogue_text }}</a>
     </div>

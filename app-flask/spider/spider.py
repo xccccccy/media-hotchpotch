@@ -28,9 +28,66 @@ def test_connect():
 
 
 # book 相关的
+
+@spider_decorator
+def book_recommend():
+    recommend_books = {'hot_book': [], 'top_book': [], 'type_book': {}}
+    book_resp = session.get(home_url, headers=get_headers(), timeout=10)
+    book_bsobj = BeautifulSoup(book_resp.content.decode(), 'lxml')
+    hot_book_bsobj = book_bsobj.find('div', {'class': 'hot'}).find_all('div', {'class': 'item'})
+    top_book_bsobj = book_bsobj.find('div', {'class': 'top'}).find_all('li')
+
+    hot_book = []
+    for book_li in hot_book_bsobj:
+        a_book = {
+            'name': book_li.find('dl').find('a').getText(),
+            'author': book_li.find('dl').find('span').getText(),
+            'img_url': book_li.find('img').get('src'),
+            'resume': book_li.find('dd').getText().replace('\u3000', ''),
+            'book_id': book_li.find('dl').find('a').get('href').split('/')[2]
+        }
+        hot_book.append(a_book)
+    recommend_books['hot_book'] = hot_book
+
+    top_book = []
+    for book_li in top_book_bsobj:
+        a_book = {
+            'name': book_li.find('span', {'class': 's2'}).getText(),
+            'type': book_li.find('span', {'class': 's1'}).getText()[1:-1],
+            'author': book_li.find('span', {'class': 's5'}).getText(),
+            'book_id': book_li.find('a').get('href').split('/')[2]
+        }
+        top_book.append(a_book)
+    recommend_books['top_book'] = top_book
+
+    for book_block in book_bsobj.find_all('div', {'class': 'block'}):
+        book_type = book_block.find('h2').getText()
+        block_top_book = {
+            'name': book_block.find('div', {'class', 'block_top'}).find('dl').find('a').getText(),
+            'resume': book_block.find('div', {'class', 'block_top'}).find('dd').getText()[3:].replace('\u3000', ''),
+            'img_url': book_block.find('div', {'class', 'block_top'}).find('img').get('src'),
+            'book_id': book_block.find('div', {'class', 'block_top'}).find('dl').find('a').get('href').split('/')[2]
+        }
+        block_other_books = []
+        for book_li in book_block.find_all('li'):
+            a_book = {
+                'name': book_li.find('span', {'class': 's2'}).getText(),
+                'type': book_li.find('span', {'class': 's1'}).getText()[1:-1],
+                'author': book_li.find('span', {'class': 's3'}).getText(),
+                'book_id': book_li.find('a').get('href').split('/')[2]
+            }
+            block_other_books.append(a_book)
+        recommend_books['type_book'][book_type] = {
+            'block_top_book': block_top_book,
+            'block_other_books': block_other_books
+        }
+    
+    return recommend_books
+
+
 @spider_decorator
 def book_search(search_string):
-    search_resp = session.get(home_url + '/s', headers=get_headers(), params={'q': search_string}, timeout=5)
+    search_resp = session.get(home_url + '/s', headers=get_headers(), params={'q': search_string}, timeout=10)
     search_bsobj = BeautifulSoup(search_resp.content.decode(), 'lxml')
     bookbox_list = search_bsobj.find('div', {'class': 'type_show'}).find_all('div', {'class': 'box'})
     result_list = []
@@ -41,8 +98,16 @@ def book_search(search_string):
         author = bookbox.find('div', {'class': 'author'}).getText()[3:]
         resume = bookbox.find('div', {'class': 'uptime'}).getText()
         name = bookbox.find('h4', {'class': 'bookname'}).getText()
+        if '肏' in name or '淫' in name or '操' in name or '艹' in name or '艳' in name or '女' in name or '逼' in name or '勾引' in name or '尿' in name or '干' in name or '快穿' in name or '床' in name:
+            continue
+        if '肉' in name or '撞坏' in name or '骚' in name or '乱伦' in name or '丈' in name or '岳母' in name or '矫' in name:
+            continue
+        if '母' in name or '射' in name or '弄哭' in name or '强睡' in name:
+            continue
+        if len(re.findall(re.compile(r'[A-Za-z]', re.S), name)):
+            continue
         a_bookbox_dict['name'] = name
-        a_bookbox_dict['resume'] = resume
+        a_bookbox_dict['resume'] = resume.replace('\u3000', '')
         a_bookbox_dict['author'] = author
         a_bookbox_dict['img_url'] = img_url
         a_bookbox_dict['book_id'] = book_id
@@ -53,7 +118,7 @@ def book_search(search_string):
 def book_allinfo(book_id):
     info_dict = {}
     book_url = f'/book/{book_id}/'
-    book_resp = session.get(home_url + book_url, headers=get_headers(), timeout=5)
+    book_resp = session.get(home_url + book_url, headers=get_headers(), timeout=10)
     book_bsobj = BeautifulSoup(book_resp.content.decode(), 'lxml')
 
     catalogue_list_tag = book_bsobj.find('div', {'class': 'listmain'}).find_all(
@@ -61,6 +126,7 @@ def book_allinfo(book_id):
     catalogue_text_list = list(map(lambda x: x.getText(), catalogue_list_tag))
     catalogue_href_list = list(map(lambda x: x.find('a').get('href')[:-5], catalogue_list_tag))
     # catalogue_text_dict = dict(zip(range(len(catalogue_text_list)), catalogue_text_list))
+    book_type = book_bsobj.find('div', {'class': 'path'}).getText().split('>')[1].strip()
     book_info = book_bsobj.find('div', {'class': 'info'})
     book_name = book_info.find('h1').getText()
     book_img_url = book_info.find('img').get('src')
@@ -74,12 +140,13 @@ def book_allinfo(book_id):
     info_dict['catalogue_text_list'] = catalogue_text_list
     info_dict['catalogue_href_list'] = catalogue_href_list
     info_dict['book_name'] = book_name
+    info_dict['book_type'] = book_type
     info_dict['book_img_url'] = book_img_url
     info_dict['book_author'] = book_author
     info_dict['book_state'] = book_state
     info_dict['book_last_update_time'] = book_last_update_time
     info_dict['book_last_catalogue_text'] = book_last_catalogue_text
-    info_dict['book_resume'] = book_resume
+    info_dict['book_resume'] = book_resume.replace('\u3000', '')
     info_dict['book_id'] = book_id
     return info_dict
 
@@ -87,7 +154,7 @@ def book_allinfo(book_id):
 def book_someinfo(book_id):
     info_dict = {}
     book_url = f'/book/{book_id}/'
-    book_resp = session.get(home_url + book_url, headers=get_headers(), timeout=5)
+    book_resp = session.get(home_url + book_url, headers=get_headers(), timeout=10)
     book_bsobj = BeautifulSoup(book_resp.content.decode(), 'lxml')
     book_info = book_bsobj.find('div', {'class': 'info'})
     book_name = book_info.find('h1').getText()
@@ -101,7 +168,7 @@ def book_someinfo(book_id):
 
 @spider_decorator
 def book_content(book_id, catalogue_number):
-    book_content_resp = session.get(home_url + f'/book/{book_id}/{catalogue_number}.html', headers=get_headers(), timeout=5)
+    book_content_resp = session.get(home_url + f'/book/{book_id}/{catalogue_number}.html', headers=get_headers(), timeout=10)
     book_content_bsobj = BeautifulSoup(book_content_resp.content.decode(), 'lxml')
     book_catalogue_name = book_content_bsobj.find('div', {'class': 'content'}).find('h1').getText()
     context_0 = re.findall(r'.*?id="chaptercontent">+(.*?)\n+',
@@ -117,7 +184,7 @@ def web_video_search(search_string):
 
 # @spider_decorator
 def aiqiyi_video_search(search_string):
-    search_resp = session.get("https://so.iqiyi.com/so" + '/q_' + search_string, headers=get_headers(), timeout=5)
+    search_resp = session.get("https://so.iqiyi.com/so" + '/q_' + search_string, headers=get_headers(), timeout=10)
     search_bsobj = BeautifulSoup(search_resp.content.decode(), 'lxml')
 
     result_items = search_bsobj.find_all('div', {'class': 'qy-search-result-item'})

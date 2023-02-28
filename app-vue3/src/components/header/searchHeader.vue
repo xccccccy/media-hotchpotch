@@ -1,5 +1,5 @@
 <template>
-    <div class="search hidden sm:flex sm:w-1/2 lg:w-1/3 xl:w-1/4 mx-4">
+    <div class="search hidden lg:flex w-1/2 xl:w-1/4 mx-4">
         <div class="muye-header-search bg-zinc-50 dark:bg-zinc-600">
             <input v-model="search_string" :placeholder="headerSetting.placeholder" @keyup.enter="headerSetting.clickHandle(search_string)">
             <Search class="search-icon text-zinc-900 dark:text-zinc-400" @click="headerSetting.clickHandle(search_string)"></Search>
@@ -21,7 +21,7 @@ export default {
     },
     setup() {
 
-        const search_string = ref('问我')
+        const search_string = ref('')
 
         return { search_string };
     }

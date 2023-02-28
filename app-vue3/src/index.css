@@ -31,21 +31,7 @@ body {
 }
 
 @layer components {
-    .hidden {
-        display: none !important;
-    }
-
-    .block {
-        display: block !important;
-    }
-
-    .flex {
-        display: flex !important;
-    }
-
-    .dark .block {
-        display: block;
-    }
+    
 }
 
 .el-loading-mask {

@@ -1,42 +1,43 @@
 <template>
-    <div class="app w-full sm:w-3/4 2xl:w-2/3 pt-16 lg:pt-20">
-        <div class="my-3 px-1">
-            <el-input v-model="search_string" placeholder="搜索书籍。" class="input-with-select" @keyup.enter="searchbook()"
-                size="large">
-                <template #suffix>
-                    <el-icon class="el-input__icon" @click="searchbook()">
-                        <search />
-                    </el-icon>
-                </template>
-            </el-input>
-        </div>
-        <div class="book-list" v-if="bookshelf_show">
-            <div class="list-title">
-                <span>我的书架</span>
-            </div>
-            <el-row class="justify-between">
-                <bookshelfbox v-for="book in bookshelf" :key="book.book_id" :book="book" @delBook="delbook">
-                </bookshelfbox>
-            </el-row>
-        </div>
-        <div class="book-list" v-if="bookbox_list_show">
-            <div class="list-title" v-show="search_info.length != 0">
-                <span v-html="search_info"></span>
-            </div>
-            <div class="type_show" v-loading="searchloading">
-                <bookbox v-for="book in search_books" :key="book.book_id" :book="book"></bookbox>
+    <div class="w-full sm:w-3/4 2xl:w-2/3 pt-16 lg:pt-20">
+        <div class="my-3 px-1 block lg:hidden">
+            <div class="muye-header-search bg-zinc-50 dark:bg-zinc-600">
+                <input v-model="search_string" placeholder="搜索书籍" @keyup.enter="searchbook()">
+                <Search class="search-icon text-zinc-900 dark:text-zinc-400" @click="searchbook()"></Search>
             </div>
         </div>
-        <div class="book-list shang-list" v-if="shang_show">
-            <div class="shang flex-col xl:flex-row">
-                <div>
-                    <img src="@/assets/img/wx_shou.jpg" loading="lazy" class="shadow-2xl" />
+        <div class="p-1 pb-8">
+            <div v-if="type_show == 'home'">
+                <RecommendBook></RecommendBook>
+            </div>
+            <div v-if="type_show == 'bookshelf'">
+                <div class="text-left text-xl font-medium p-2 ml-1 mb-2 border-b border-black dark:border-white border-opacity-10 dark:border-opacity-10 ">
+                    <span>我的书架</span>
                 </div>
-                <div>
-                    <img src="@/assets/img/zfb_shou.jpg" loading="lazy" class="shadow-2xl" />
+                <div class="flex flex-wrap justify-between">
+                    <Bookshelfbox v-for="book in bookshelf" :key="book.book_id" :book="book" @delBook="delbook">
+                    </Bookshelfbox>
                 </div>
-                <div>
-                    <img src="@/assets/img/wx_zan.jpg" loading="lazy" class="shadow-2xl" />
+            </div>
+            <div v-if="type_show == 'search'">
+                <div class="text-left text-xl font-medium p-2 ml-1 mb-2 border-b border-black dark:border-white border-opacity-10 dark:border-opacity-10 " v-show="search_info.length != 0">
+                    <span class="pl-1" v-html="search_info"></span>
+                </div>
+                <div class="flex flex-wrap justify-between" v-loading="searchloading">
+                    <SearchBookbox v-for="book in search_books" :key="book.book_id" :book="book"></SearchBookbox>
+                </div>
+            </div>
+            <div class="shang-list" v-if="type_show == 'shang'">
+                <div class="shang flex-col xl:flex-row">
+                    <div>
+                        <img src="@/assets/img/wx_shou.jpg" loading="lazy" class="shadow-2xl" />
+                    </div>
+                    <div>
+                        <img src="@/assets/img/zfb_shou.jpg" loading="lazy" class="shadow-2xl" />
+                    </div>
+                    <div>
+                        <img src="@/assets/img/wx_zan.jpg" loading="lazy" class="shadow-2xl" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,15 +49,16 @@
 import axios from "axios";
 import $ from "jquery";
 import { defineAsyncComponent, markRaw } from 'vue'
-import { Search } from '@element-plus/icons-vue'
+import Search from '~icons/uil/search'
 import { getBookShelf, fromBookshelfDelBook, addBookToBookshelf } from './managebookshelf'
 import Like from "../like.vue";
 import { useHeaderStore } from '../../stores/header'
 import CarbonBook from '~icons/carbon/book'
 import CarbonSearch from '~icons/carbon/search'
 import notoMoneyBag from '~icons/healthicons/money-bag-outline'
+import RecommendBook from './recommendBook.vue'
 
-const Bookbox = defineAsyncComponent(() => import('./bookbox.vue'))
+const SearchBookbox = defineAsyncComponent(() => import('./searchbookbox.vue'))
 const Bookshelfbox = defineAsyncComponent(() => import('./bookshelfbox.vue'))
 
 export default {
@@ -64,13 +66,11 @@ export default {
     data() {
         return {
             search_string: '',
-            bookshelf_show: true,
-            bookbox_list_show: false,
+            type_show: 'home',
             search_data: null,
             search_books: null,
             search_info: "暂无搜索...",
             bookshelf: null,
-            shang_show: false,
             searchloading: false,
             ismobile: false,
         };
@@ -101,7 +101,7 @@ export default {
                         [
                             {
                                 type: 'search',
-                                placeholder: "搜索书籍。",
+                                placeholder: "搜索书籍",
                                 clickHandle: this.searchbook,
                                 position: "right"
                             },
@@ -115,7 +115,7 @@ export default {
                                 type: 'common',
                                 headerString: '首页',
                                 // iconSetting: markRaw(CarbonBook),
-                                clickHandle: this.backbookshelf
+                                clickHandle: () => {this.type_show = 'home'}
                             },
                             {
                                 type: 'common',
@@ -139,16 +139,8 @@ export default {
         },
         initBookShelf() {
             this.bookshelf = JSON.parse(localStorage.bookshelf);
-            if (!Object.keys(this.bookshelf).length) {
-                this.bookshelf_show = false;
-                this.bookbox_list_show = true;
-            }
             getBookShelf().then((res) => {
                 this.bookshelf = res;
-                if (!Object.keys(this.bookshelf).length) {
-                    this.bookshelf_show = false;
-                    this.bookbox_list_show = true;
-                }
             });
         },
         searchbook(s) {
@@ -156,8 +148,7 @@ export default {
             this.search_string = search_s;
             this.searchloading = true;
             this.search_info = "正在搜索中...";
-            this.bookshelf_show = false;
-            this.bookbox_list_show = true;
+            this.type_show = 'search';
             this.$router.push("/book?s=" + search_s);
             axios
                 .post("/api/book/search", {
@@ -165,10 +156,10 @@ export default {
                 })
                 .then((res) => {
                     this.searchloading = false;
-                    (document.title = "'" + search_s + "'" + "的搜索结果"),
+                    (document.title = "'" + search_s + "'" + "_搜索"),
                         (this.search_books = res.data.data);
                     if (this.search_books.length) {
-                        this.search_info ='';
+                        this.search_info = '搜索结果：';
                     } else {
                         this.search_info =
                             '😭 暂未找到与"<b>' + search_s + '</b>"相关的书籍';
@@ -181,30 +172,16 @@ export default {
                 });
         },
         backbookshelf() {
-            if (!this.bookshelf_show) {
-                this.closealldiv();
-            }
-            this.bookshelf_show = !this.bookshelf_show;
+            this.type_show = 'bookshelf';
         },
         back_search() {
-            if (!this.bookbox_list_show) {
-                this.closealldiv();
-            }
-            this.bookbox_list_show = !this.bookbox_list_show;
+            this.type_show = 'search';
+        },
+        shangqian() {
+            this.type_show = 'shang';
         },
         delbook(book_id) {
             this.bookshelf = fromBookshelfDelBook(book_id);
-        },
-        shangqian() {
-            if (!this.shang_show) {
-                this.closealldiv();
-            }
-            this.shang_show = !this.shang_show;
-        },
-        closealldiv() {
-            this.bookshelf_show = false;
-            this.bookbox_list_show = false;
-            this.shang_show = false;
         },
         judgeismobile() {
             var ua = navigator.userAgent;
@@ -264,10 +241,7 @@ export default {
             if (mode == 'login') {
                 getBookShelf().then((res) => {
                     this.bookshelf = res;
-                    if (!this.bookshelf_show) {
-                        this.closealldiv();
-                        this.bookshelf_show = true;
-                    }
+                    this.type_show = 'bookshelf';
                 });
             } else {
                 getBookShelf().then((res) => {
@@ -279,10 +253,11 @@ export default {
         },
     },
     components: {
-        bookbox: Bookbox,
-        bookshelfbox: Bookshelfbox,
+        SearchBookbox: SearchBookbox,
+        Bookshelfbox: Bookshelfbox,
         Search: Search,
-        Like
+        Like,
+        RecommendBook
     }
 };
 </script>
@@ -290,14 +265,30 @@ export default {
 <style scoped>
 @import "../../assets/css/book.css";
 
-.input-with-select {
-    /* opacity: 0.8; */
-    color: #000;
+.muye-header-search {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    width: 100%;
+    border-radius: 17px;
+    padding: 5px 48px 7px 16px;
 }
 
-.el-input__icon {
-    color: #4642c5;
-    font-size: 1.5rem;
+.muye-header-search input {
+    border: 0;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    background: #fafafa00;
+}
+
+.muye-header-search .search-icon {
+    font-size: 17px;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
 }
 </style>

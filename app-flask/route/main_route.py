@@ -28,6 +28,17 @@ def init_route(app):
     else:
         with open('config/allconfig.json', 'r', encoding='utf-8') as f:
             config_dict = json.load(f)
+
+    @app.route(_API + '/book/recommend', methods=['GET', 'POST'])
+    def book_recommend():
+        temp = spider.book_recommend()
+        if temp:
+            res = make_response({'data': temp})
+        else:
+            res = make_response('NO', 500)
+        current_app.logger.info(
+            f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code}')
+        return res
         
     @app.route(_API + '/book/search', methods=['GET', 'POST'])
     def book_search():
