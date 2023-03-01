@@ -1,14 +1,14 @@
 <template>
   <div class="w-full bookinfo-back z-0">
-    <div v-loading="!bookboxshow" class="bg-zinc-100 dark:bg-neutral-800 pb-8" style="min-height: 100vh;">
+    <div v-loading.fullscreen.lock="!bookboxshow" class="bg-zinc-100 dark:bg-neutral-800 pb-8" style="min-height: 100vh;">
       <div class="bg-white dark:bg-zinc-900 pt-14 sm:pt-16">
-        <div class="flex m-3 sm:m-8 mx-auto sm:mx-auto w-full sm:w-2/3  pb-1 sm:pb-6 px-2">
+        <div class="flex m-3 sm:m-8 mx-auto sm:mx-auto w-full sm:w-2/3  pb-4 sm:pb-6 px-2">
           <img class="w-36 sm:w-56 rounded-md" style="aspect-ratio: 166/242;" :src="book.book_img_url"
             :alt="book.book_name" />
           <div class="bookinfo p-3 text-left pl-6 pb-0">
             <div class="flex items-center">
               <div class=" text-3xl"> {{ book.book_name }} </div>
-              <div class=" text-zinc-700 px-2 py-px rounded-md ml-2 text-mob bg-amber-200"> {{ book.book_type }} </div>
+              <div class=" text-zinc-700 px-2 py-px rounded-md ml-2 text-sm bg-indigo-200"> {{ book.book_type }} </div>
             </div>
             <div class="author">作者：{{ book.book_author }}</div>
             <div class="">更新：{{ book.book_last_update_time }}</div>

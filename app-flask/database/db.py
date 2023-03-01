@@ -51,6 +51,23 @@ class Bookshelf(db.Model):
     # repr()方法显示一个可读字符串
     def __repr__(self):
         return '<Bookshelf ->  User_id:%s, Bookshelf:%s >' % self.id, self.bookshelf
+    
+class RecommendBookCmsInfo(db.Model):
+    __tablename__ = 'RecommendBookCmsInfo'
+    bookSource = db.Column(db.String(64), primary_key=True)
+    recommendBook = db.Column(db.String(64))
+    lastUpdateTime = db.Column(db.String(64))
+
+    def __init__(self, bookSource, recommendBook, lastUpdateTime):
+        self.bookSource = bookSource
+        self.recommendBook = recommendBook
+        self.lastUpdateTime = lastUpdateTime
+
+    def __repr__(self):
+        return '< RecommendBookCmsInfo: %s >' % self.name
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) if getattr(self, c.name) else "" for c in self.__table__.columns}
 
 class Video(db.Model):
     # 定义表名

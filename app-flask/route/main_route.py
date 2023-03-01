@@ -31,7 +31,7 @@ def init_route(app):
 
     @app.route(_API + '/book/recommend', methods=['GET', 'POST'])
     def book_recommend():
-        temp = spider.book_recommend()
+        temp = json.loads(dbop.getRecommendBook("https://www.quge3.com"))
         if temp:
             res = make_response({'data': temp})
         else:

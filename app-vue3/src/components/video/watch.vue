@@ -56,7 +56,8 @@ headerStore.$patch({
             {
                 type: 'search',
                 placeholder: "搜索",
-                clickHandle: searchVideo
+                clickHandle: searchVideo,
+                position: "right"
             }
         ]
     }

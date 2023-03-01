@@ -3,7 +3,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(basedir)
 
-from db import db, init_db, User, Bookshelf, Video, VideoCmsInfo
+from db import db, init_db, User, Bookshelf, Video, VideoCmsInfo, RecommendBookCmsInfo
 from flask import Flask, current_app, session
 from sqlalchemy import or_,and_
 
@@ -184,7 +184,7 @@ def searchVideo(searchString):
 
 
 def insertVideoCmsInfo(videoCmsInfoDict):
-     with app.app_context():
+    with app.app_context():
         try:
             videoCmsInfo = VideoCmsInfo.query.get(videoCmsInfoDict["name"])
             if videoCmsInfo:
@@ -209,6 +209,31 @@ def getAllVideoCmsInfo():
             print('错误: %s' % (r))
             return {'res': False, 'context': "发生未知错误"}
 
+def insertRecommendBook(recommendBookDict):
+    with app.app_context():
+        try:
+            recommendBookCmsInfo = RecommendBookCmsInfo.query.get(recommendBookDict["bookSource"])
+            if recommendBookCmsInfo:
+                recommendBookCmsInfo.bookSource, recommendBookCmsInfo.recommendBook, recommendBookCmsInfo.lastUpdateTime = recommendBookDict["bookSource"], recommendBookDict["recommendBook"], recommendBookDict["lastUpdateTime"]
+            else:
+                recommendBookCmsInfo = RecommendBookCmsInfo(recommendBookDict["bookSource"], recommendBookDict["recommendBook"], recommendBookDict["lastUpdateTime"])
+                db.session.add(recommendBookCmsInfo)
+            db.session.commit()
+            return {'res': True}
+        except Exception as r:
+            print('错误: %s' % (r))
+            return {'res': False, 'context': "发生未知错误"}
+        
+def getRecommendBook(bookSource):
+    with app.app_context():
+        try:
+            recommendBookCmsInfo = RecommendBookCmsInfo.query.get(bookSource)
+            return recommendBookCmsInfo.recommendBook
+        except Exception as r:
+            print('错误: %s' % (r))
+            return None
+        
+        
 if __name__ == "__main__":
     app=Flask('11')
     init_database(app)
