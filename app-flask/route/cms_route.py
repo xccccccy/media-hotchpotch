@@ -1,27 +1,9 @@
 from flask import current_app, make_response, request, Response, render_template, render_template_string, url_for, redirect, session
 from database import dbop
 from spider.videocms import get_all_video
+from scheduler.scheduler import update_recommend_book_job, cmsUrl
 
 _CMSAPI = '/cmsapi'
-
-cmsUrl = {
-    "private": {
-        "飞速资源": "https://www.feisuzyapi.com/api.php/provide/vod/from/fsm3u8/at/xmlsea/",
-        "红牛资源": "https://www.hongniuzy2.com/api.php/provide/vod/from/hnm3u8/at/xml/",
-        "八戒资源": "http://cj.bajiecaiji.com/inc/bjm3u8.php",
-        "天空资源(未适配)": "https://m3u8.tiankongapi.com/api.php/provide/vod/from/tkm3u8/",
-        "1080资源(未适配)": "https://api.1080zyku.com/inc/ldg_api_all.php"
-    },
-    "official": {
-        "云解析资源": {
-            "腾讯资源": "https://api.yparse.com/api/xml/qq",
-            "爱奇艺": "https://api.yparse.com/api/xml/qiyi",
-            "优酷": "https://api.yparse.com/api/xml/youku",
-            "芒果": "https://api.yparse.com/api/xml/mgtv"
-        }
-    }
-}
-
 
 def initCmsRoute(app):
     @app.route(_CMSAPI + '/init/videos', methods=['GET', 'POST'])
@@ -62,6 +44,22 @@ def initCmsRoute(app):
     def getAllVideoCmsInfos():
         if session.get('admin') or session.get('token'):
             result = dbop.getAllVideoCmsInfo()
-            return make_response(result)
+            return make_response({'res': True, 'videoCmsInfos': result})
+        else:
+            return make_response('NO', 403)
+        
+    @app.route(_CMSAPI + '/init/recommendbook', methods=['GET', 'POST'])
+    def initRecommendBook():
+        if session.get('admin') or session.get('token'):
+            update_recommend_book_job()
+            return make_response('YES')
+        else:
+            return make_response('NO', 403)
+        
+    @app.route(_CMSAPI + '/get/recommendbookcmsinfo', methods=['GET', 'POST'])
+    def getRecommendBook():
+        if session.get('admin') or session.get('token'):
+            result = dbop.getAllRecommendBookCmsInfo()
+            return make_response({'res': True, 'recommendBookCmsInfos': result})
         else:
             return make_response('NO', 403)

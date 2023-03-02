@@ -5,11 +5,28 @@ from flask_apscheduler import APScheduler
 
 from spider.videocms import get_all_video
 from spider.spider import book_recommend
-from route.cms_route import cmsUrl
 from database.dbop import insertRecommendBook
 
 scheduler = APScheduler()
- 
+
+cmsUrl = {
+    "private": {
+        "飞速资源": "https://www.feisuzyapi.com/api.php/provide/vod/from/fsm3u8/at/xmlsea/",
+        "红牛资源": "https://www.hongniuzy2.com/api.php/provide/vod/from/hnm3u8/at/xml/",
+        "八戒资源": "http://cj.bajiecaiji.com/inc/bjm3u8.php",
+        "天空资源(未适配)": "https://m3u8.tiankongapi.com/api.php/provide/vod/from/tkm3u8/",
+        "1080资源(未适配)": "https://api.1080zyku.com/inc/ldg_api_all.php"
+    },
+    "official": {
+        "云解析资源": {
+            "腾讯资源": "https://api.yparse.com/api/xml/qq",
+            "爱奇艺": "https://api.yparse.com/api/xml/qiyi",
+            "优酷": "https://api.yparse.com/api/xml/youku",
+            "芒果": "https://api.yparse.com/api/xml/mgtv"
+        }
+    }
+}
+
 cmsUrlNames = {
     "private": ["飞速资源"],
     "official": {

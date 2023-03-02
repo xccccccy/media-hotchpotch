@@ -31,8 +31,6 @@ if __name__ == '__main__':
     init_route(app)
     init_mail(app)
 
-    update_recommend_book_job()
-
     # scheduler
     scheduler.init_app(app)
     scheduler.start()
