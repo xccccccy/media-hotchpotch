@@ -29,10 +29,13 @@ def update_video_job():
 
 @scheduler.task('cron', id='update_recommendBook', day='*', hour='*', minute='45')
 def update_recommend_book_job():
-    recommendBook = json.dumps(book_recommend())
-    recommendBookDict = {}
-    recommendBookDict["bookSource"] = "https://www.quge3.com"
-    recommendBookDict["recommendBook"] = recommendBook
-    recommendBookDict["lastUpdateTime"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    insertRecommendBook(recommendBookDict)
-    print(str(datetime.datetime.now()) + ' Update Recommend Book Job executed')
+    try:
+        recommendBook = json.dumps(book_recommend())
+        recommendBookDict = {}
+        recommendBookDict["bookSource"] = "https://www.quge3.com"
+        recommendBookDict["recommendBook"] = recommendBook
+        recommendBookDict["lastUpdateTime"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        insertRecommendBook(recommendBookDict)
+        print(str(datetime.datetime.now()) + ' Update Recommend Book Job executed')
+    except Exception as r:
+        print('错误: %s' % (r))

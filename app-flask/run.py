@@ -8,7 +8,7 @@ from config.config import register_logging
 from route.main_route import init_route
 from database.dbop import init_database
 from mail.mail import init_mail
-from scheduler.scheduler import scheduler
+from scheduler.scheduler import scheduler, update_recommend_book_job
 
     
 if __name__ == '__main__':
@@ -30,6 +30,8 @@ if __name__ == '__main__':
     init_database(app)
     init_route(app)
     init_mail(app)
+
+    update_recommend_book_job()
 
     # scheduler
     scheduler.init_app(app)
