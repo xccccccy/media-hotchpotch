@@ -19,12 +19,12 @@ def init_mail(_app):
 code_list = []
 for i in range(10): # 0-9数字
     code_list.append(str(i))
-for i in range(65, 91): # 对应从“A”到“Z”的ASCII码
-    code_list.append(chr(i))
-for i in range(97, 123): #对应从“a”到“z”的ASCII码
-    code_list.append(chr(i))
+# for i in range(65, 91): # 对应从“A”到“Z”的ASCII码
+#     code_list.append(chr(i))
+# for i in range(97, 123): #对应从“a”到“z”的ASCII码
+#     code_list.append(chr(i))
 
-def generate_verification_code(len=6):
+def generate_verification_code(len=4):
     ''' 随机生成6位的验证码 '''
     myslice = random.sample(code_list, len) # 从list中随机获取6个元素，作为一个片断返回
     verification_code = ''.join(myslice) # list to string

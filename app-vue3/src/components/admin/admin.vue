@@ -124,9 +124,6 @@ export default {
         }
 
         const isCollapse = ref(false)
-        setTimeout(() => {
-            isCollapse.value = true;
-        }, 2000)
 
         return { handleSelect, isCollapse };
     }

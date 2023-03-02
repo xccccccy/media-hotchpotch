@@ -13,3 +13,15 @@ export const initUrlNames = () => {
 export const delAllVideos = () => {
     return service.get("/cmsapi/del/allvideos")
 }
+
+export const initRecommendBookCmsInfo = () => {
+    return service.get("/cmsapi/init/recommendbook")
+}
+
+export const getAllVideoCmsInfo = () => {
+    return service.get("/cmsapi/get/allcmsinfos")
+}
+
+export const getRecommendBookCmsInfo = () => {
+    return service.get("/cmsapi/get/recommendbookcmsinfo")
+}

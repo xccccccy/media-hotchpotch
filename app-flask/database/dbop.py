@@ -204,7 +204,7 @@ def getAllVideoCmsInfo():
         try:
             objs = VideoCmsInfo.query.all()
             objs = list(map(lambda x: x.to_dict(), objs))[:100]
-            return {'res': True, 'videoCmsInfos': objs}
+            return objs
         except Exception as r:
             print('错误: %s' % (r))
             return {'res': False, 'context': "发生未知错误"}
@@ -229,6 +229,16 @@ def getRecommendBook(bookSource):
         try:
             recommendBookCmsInfo = RecommendBookCmsInfo.query.get(bookSource)
             return recommendBookCmsInfo.recommendBook
+        except Exception as r:
+            print('错误: %s' % (r))
+            return None
+
+def getAllRecommendBookCmsInfo():
+    with app.app_context():
+        try:
+            objs = RecommendBookCmsInfo.query.all()
+            objs = list(map(lambda x: x.to_dict(), objs))[:100]
+            return objs
         except Exception as r:
             print('错误: %s' % (r))
             return None
