@@ -1,5 +1,5 @@
 <template>
-  <div @mouseenter="bottom_bar_hover = true" @mouseleave="bottom_bar_hover = false" class="mb-2 sm:mb-6 p-4 cursor-pointer w-full sm:w-fit" @click="$router.push('/book/' + book.book_id)">
+  <div @mouseenter="bottom_bar_hover = true" @mouseleave="bottom_bar_hover = false" class="mb-1 sm:mb-6 p-4 cursor-pointer w-full sm:w-fit" @click="$router.push('/book/' + book.book_id)">
     <div class="w-full sm:w-80 h-32">
       <div class=" w-24 h-32 float-left relative">
         <div class="book-shadow"></div>

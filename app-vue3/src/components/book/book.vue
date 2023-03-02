@@ -1,7 +1,7 @@
 <template>
     <div class="w-full sm:w-3/4 2xl:w-2/3 pt-16 lg:pt-20">
         <div class="my-3 px-1 block lg:hidden">
-            <div class="muye-header-search bg-zinc-50 dark:bg-zinc-600">
+            <div class="muye-header-search bg-zinc-200 dark:bg-zinc-600">
                 <input v-model="search_string" placeholder="搜索书籍" @keyup.enter="searchbook()">
                 <Search class="search-icon text-zinc-900 dark:text-zinc-400" @click="searchbook()"></Search>
             </div>

@@ -31,6 +31,8 @@ def update_video_job():
 def update_recommend_book_job():
     try:
         recommendBook = json.dumps(book_recommend())
+        if not recommendBook or recommendBook == '':
+            return
         recommendBookDict = {}
         recommendBookDict["bookSource"] = "https://www.quge3.com"
         recommendBookDict["recommendBook"] = recommendBook

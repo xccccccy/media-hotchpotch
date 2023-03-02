@@ -7,7 +7,7 @@
                     class="m-2 py-3 text-left text-xl font-medium border-b border-black dark:border-white border-opacity-10 dark:border-opacity-10 ">
                     <span class="pl-4">热榜推荐</span>
                 </h3>
-                <div class="flex flex-wrap  justify-around">
+                <div class="flex flex-wrap justify-around">
                     <SearchBook v-for="book in recommendBooks.hot_book" :key="book.book_id" :book="book"></SearchBook>
                 </div>
             </div>
@@ -30,7 +30,7 @@
         <div>
             <!-- 下面 type_book -->
             <div class="flex flex-wrap">
-                <div v-for="(type_books, type) in recommendBooks.type_book" class="w-full sm:w-1/3 p-4">
+                <div v-for="(type_books, type) in recommendBooks.type_book" class="w-full sm:w-1/3 p-3 sm:p-4">
                     <h3
                         class="m-2 py-3 text-left text-xl font-medium border-b border-black dark:border-white border-opacity-10 dark:border-opacity-10 ">
                         <span class="pl-3"> {{ type }} </span>
