@@ -4,7 +4,7 @@
         <div class="flex">
             <div class="w-full sm:w-2/3">
                 <h3
-                    class="m-2 py-3 text-left text-xl font-medium border-b border-black dark:border-white border-opacity-10 dark:border-opacity-10 ">
+                    class="m-0 sm:m-2 py-3 text-left text-xl font-medium border-b border-black dark:border-white border-opacity-10 dark:border-opacity-10 ">
                     <span class="pl-4">热榜推荐</span>
                 </h3>
                 <div class="flex flex-wrap justify-around">
