@@ -27,7 +27,7 @@ def update_video_job():
             get_all_video(cmsUrl["official"][officialUrlName][officialUrlSiteName], "official", officialUrlName + "-" + officialUrlSiteName)
     print(str(datetime.datetime.now()) + ' Update Video Job executed')
 
-@scheduler.task('cron', id='update_recommendBook', day='*', hour='3')
+@scheduler.task('cron', id='update_recommendBook', day='*', hour='*', minute='45')
 def update_recommend_book_job():
     recommendBook = json.dumps(book_recommend())
     recommendBookDict = {}
