@@ -51,8 +51,10 @@ def initCmsRoute(app):
     @app.route(_CMSAPI + '/init/recommendbook', methods=['GET', 'POST'])
     def initRecommendBook():
         if session.get('admin') or session.get('token'):
-            update_recommend_book_job()
-            return make_response('YES')
+            if update_recommend_book_job():
+                return make_response('YES')
+            else:
+                return make_response('NO', 500)
         else:
             return make_response('NO', 403)
         

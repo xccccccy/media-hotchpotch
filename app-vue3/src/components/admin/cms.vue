@@ -72,6 +72,9 @@ export default {
             const downloadLoading = ElLoading.service({ fullscreen: true, lock: true, text: '正在下载。。。' })
             initVideoDatabase(urlName.value)
                 .then((res) => {
+                    getAllVideoCmsInfo().then((res) => {
+                        videoCmsInfos.value = res.data.videoCmsInfos;
+                    })
                     ElNotification({ message: res.data, type: 'success', duration: 2500 });
                 })
                 .catch((err) => {
@@ -87,6 +90,9 @@ export default {
             delAllVideos()
                 .then((res) => {
                     console.log(res);
+                    getAllVideoCmsInfo().then((res) => {
+                        videoCmsInfos.value = res.data.videoCmsInfos;
+                    })
                     ElNotification({ message: res.data, type: 'success', duration: 2500 });
                 })
                 .catch((err) => {
@@ -101,7 +107,7 @@ export default {
             const recommendLoading = ElLoading.service({ fullscreen: true, lock: true, text: '正在初始化推荐书籍' })
             initRecommendBookCmsInfo()
                 .then((res) => {
-                    console.log(res);
+                    p_initRecommendBookCmsInfo()
                     ElNotification({ message: res.data, type: 'success', duration: 2500 });
                 })
                 .catch((err) => {
@@ -132,17 +138,20 @@ export default {
                 recommendBook: 'No. 189, Grove St, Los Angeles',
             }])
 
-        getRecommendBookCmsInfo().then((res) => {
-            console.log(res.data)
-            let recommendBookCmsInfos = res.data.recommendBookCmsInfos;
-            recommendBookCmsInfos = recommendBookCmsInfos.map((item, index) => {
-                let obj = item
-                obj.recommendBook = obj.recommendBook?.slice(0, 20);
-                return obj
+        const p_initRecommendBookCmsInfo = () => {
+            getRecommendBookCmsInfo().then((res) => {
+                console.log(res.data)
+                let recommendBookCmsInfos = res.data.recommendBookCmsInfos;
+                recommendBookCmsInfos = recommendBookCmsInfos.map((item, index) => {
+                    let obj = item
+                    obj.recommendBook = obj.recommendBook?.slice(0, 20);
+                    return obj
+                })
+                console.log(recommendBookCmsInfos)
+                recommendBookInfotableData.value = recommendBookCmsInfos;
             })
-            console.log(recommendBookCmsInfos)
-            recommendBookInfotableData.value = recommendBookCmsInfos;
-        })
+        }
+        p_initRecommendBookCmsInfo()
 
         return { initDownloadVideos, urlNames, urlName, delDownloadVideos, initRecommendBookInfo, videoCmsInfos, recommendBookInfotableData }
     }

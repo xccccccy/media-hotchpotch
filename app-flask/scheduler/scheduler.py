@@ -48,13 +48,14 @@ def update_video_job():
 def update_recommend_book_job():
     try:
         recommendBook = json.dumps(book_recommend())
-        if not recommendBook or recommendBook == '':
-            return
+        if not recommendBook or recommendBook == '' or recommendBook == 'null':
+            return False
         recommendBookDict = {}
         recommendBookDict["bookSource"] = "https://www.quge3.com"
         recommendBookDict["recommendBook"] = recommendBook
         recommendBookDict["lastUpdateTime"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         insertRecommendBook(recommendBookDict)
         print(str(datetime.datetime.now()) + ' Update Recommend Book Job executed')
+        return True
     except Exception as r:
         print('错误: %s' % (r))

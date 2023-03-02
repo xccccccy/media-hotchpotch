@@ -3,7 +3,7 @@
     <div v-loading.fullscreen.lock="!bookboxshow" class="bg-zinc-100 dark:bg-neutral-800 pb-8" style="min-height: 100vh;">
       <div class="bg-white dark:bg-zinc-900 pt-14 sm:pt-16">
         <div class="flex m-3 sm:m-8 mx-auto sm:mx-auto w-full sm:w-2/3  pb-4 sm:pb-6 px-2">
-          <img class="w-36 sm:w-56 rounded-md" style="aspect-ratio: 166/242;" :src="book.book_img_url"
+          <img class="w-36 sm:w-44 rounded-md" style="aspect-ratio: 166/242;" :src="book.book_img_url"
             :alt="book.book_name" />
           <div class="bookinfo p-3 text-left pl-6 pb-0">
             <div class="flex items-center">
@@ -16,7 +16,7 @@
             <div class="hidden sm:block">
               <div class="resume">{{ book.book_resume }}</div>
             </div>
-            <div class="bookdo">
+            <div class="bookdo mb-1">
               <el-row>
                 <el-button color="#626aef" plain size="large" auto-insert-space v-if="joinShelfBtnShow"
                   @click="joinbookshelf">加入书架</el-button>
