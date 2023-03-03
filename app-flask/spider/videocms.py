@@ -16,7 +16,7 @@ def get_start_info(cmsUrl):
     print(cmsUrl, "开始了。。。")
     resp = session.get(cmsUrl, headers={ 'User-Agent': 'Chrome/98.0.4758.102 Safari/537.36' }, timeout=15)
     sourceData = resp.content.decode()
-    root = ET.fromstring(sourceData)
+    root = ET.fromstring(sourceData, parser=ET.XMLParser(encoding="utf-8"))
 
     allcount = root.find('list').get('recordcount')
     pagecount = root.find('list').get('pagecount')
