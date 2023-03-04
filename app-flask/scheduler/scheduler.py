@@ -14,7 +14,8 @@ cmsUrl = {
         "飞速资源": "https://www.feisuzyapi.com/api.php/provide/vod/from/fsm3u8/at/xmlsea/",
         "红牛资源": "https://www.hongniuzy2.com/api.php/provide/vod/from/hnm3u8/at/xml/",
         "八戒资源": "http://cj.bajiecaiji.com/inc/bjm3u8.php",
-        "天空资源(未适配)": "https://m3u8.tiankongapi.com/api.php/provide/vod/from/tkm3u8/",
+        "天空资源(json未适配)": "https://m3u8.tiankongapi.com/api.php/provide/vod/from/tkm3u8/",
+        "天空资源(xml未适配)": "https://m3u8.tiankongapi.com/api.php/provide/vod/at/xml/",
         "1080资源(未适配)": "https://api.1080zyku.com/inc/ldg_api_all.php"
     },
     "official": {

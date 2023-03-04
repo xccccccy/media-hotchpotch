@@ -11,7 +11,7 @@
                     <SearchBook v-for="book in recommendBooks.hot_book" :key="book.book_id" :book="book"></SearchBook>
                 </div>
             </div>
-            <div class=" w-1/4 ml-8 hidden sm:block">
+            <div class=" w-1/4 mx-8 hidden sm:block">
                 <h3
                     class="m-2 py-3 text-left text-xl font-medium border-b border-black dark:border-white border-opacity-10 dark:border-opacity-10 ">
                     <span class="pl-3">强力推荐</span>
