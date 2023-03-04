@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ headeractivate: dark_mode_span_show }" class="relative">
+  <div :class="{ headeractivate: dark_mode_span_show }" class="relative" v-clickOutSide="clickNoDom">
     <div @click="dark_mode_span_show = !dark_mode_span_show">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
         class="w-7 h-7 dark:hidden">
@@ -20,11 +20,11 @@
           class="fill-indigo-500"></path>
       </svg>
     </div>
-    <ul v-show="dark_mode_span_show" @mouseleave="dark_mode_span_show = false"
+    <ul v-show="dark_mode_span_show"
       class="absolute top-full -left-full bg-white rounded-lg ring-1 ring-slate-900/10 shadow-lg overflow-hidden w-36 py-1 text-sm text-slate-700 font-semibold dark:bg-slate-800 dark:ring-0 dark:highlight-white/5 dark:text-slate-300 mt-1"
       aria-labelledby="headlessui-listbox-label-2" aria-orientation="vertical" role="listbox" tabindex="0">
       <li class="py-1 px-2 flex items-center cursor-pointer text-indigo-500" role="option" tabindex="-1"
-        aria-selected="true" v-if="darkmode == 'light'">
+        aria-selected="true" v-show="darkmode == 'light'">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
           class="w-6 h-6 mr-2">
           <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" class="fill-indigo-400/20 stroke-indigo-500"></path>
@@ -34,7 +34,7 @@
         </svg>日间模式
       </li>
       <li class="py-1 px-2 flex items-center cursor-pointer" role="option" tabindex="-1" aria-selected="true"
-        v-if="darkmode != 'light'" @click="changedarkmode('light')">
+        v-show="darkmode != 'light'" @click="changedarkmode('light')">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
           class="w-6 h-6 mr-2">
           <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" class="stroke-slate-400 dark:stroke-slate-500"></path>
@@ -44,7 +44,7 @@
         </svg>日间模式
       </li>
       <li class="py-1 px-2 flex items-center cursor-pointer text-indigo-500" role="option" tabindex="-1"
-        v-if="darkmode == 'dark'">
+        v-show="darkmode == 'dark'">
         <svg viewBox="0 0 24 24" fill="none" class="w-6 h-6 mr-2">
           <path fill-rule="evenodd" clip-rule="evenodd"
             d="M17.715 15.15A6.5 6.5 0 0 1 9 6.035C6.106 6.922 4 9.645 4 12.867c0 3.94 3.153 7.136 7.042 7.136 3.101 0 5.734-2.032 6.673-4.853Z"
@@ -57,7 +57,7 @@
             class="fill-indigo-500"></path>
         </svg>夜间模式
       </li>
-      <li class="py-1 px-2 flex items-center cursor-pointer" role="option" tabindex="-1" v-if="darkmode != 'dark'"
+      <li class="py-1 px-2 flex items-center cursor-pointer" role="option" tabindex="-1" v-show="darkmode != 'dark'"
         @click="changedarkmode('dark')">
         <svg viewBox="0 0 24 24" fill="none" class="w-6 h-6 mr-2">
           <path fill-rule="evenodd" clip-rule="evenodd"
@@ -72,7 +72,7 @@
         </svg>夜间模式
       </li>
       <li class="py-1 px-2 flex items-center cursor-pointer text-indigo-500" id="headlessui-listbox-option-50"
-        role="option" tabindex="-1" v-if="darkmode == 'auto'">
+        role="option" tabindex="-1" v-show="darkmode == 'auto'">
         <svg viewBox="0 0 24 24" fill="none" class="w-6 h-6 mr-2">
           <path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6Z" stroke-width="2"
             stroke-linejoin="round" class="stroke-indigo-500 fill-indigo-400/20"></path>
@@ -80,8 +80,8 @@
             class="stroke-indigo-500"></path>
         </svg>跟随系统
       </li>
-      <li class="py-1 px-2 flex items-center cursor-pointer" id="headlessui-listbox-option-50" role="option"
-        tabindex="-1" v-if="darkmode != 'auto'" @click="changedarkmode('auto')">
+      <li class="py-1 px-2 flex items-center cursor-pointer" id="headlessui-listbox-option-50" role="option" tabindex="-1"
+        v-show="darkmode != 'auto'" @click="changedarkmode('auto')">
         <svg viewBox="0 0 24 24" fill="none" class="w-6 h-6 mr-2">
           <path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6Z" stroke-width="2"
             stroke-linejoin="round" class="stroke-slate-400 dark:stroke-slate-500"></path>
@@ -146,7 +146,12 @@ export default {
       }
       localStorage.darkmode = darkmode.value;
     }
-    return { dark_mode_span_show, darkmode, changedarkmode }
+    const clickNoDom = () => {
+      if (dark_mode_span_show.value) {
+        dark_mode_span_show.value = false;
+      }
+    }
+    return { dark_mode_span_show, darkmode, changedarkmode, clickNoDom }
   },
 }
 </script>
@@ -156,6 +161,7 @@ export default {
 img {
   height: 1.3rem;
 }
+
 .headeractivate {
   border-bottom: 2px solid rgb(20, 175, 103);
 }

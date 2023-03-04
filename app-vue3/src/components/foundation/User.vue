@@ -1,8 +1,8 @@
 <template>
-  <div class="user-all" :class="{ headeractivate: loginShow }" style="margin-right: .6rem">
+  <div class="user-all" :class="{ headeractivate: loginShow }" style="margin-right: .6rem" v-clickOutSide="clickNoDom">
     <img v-show="icon_show" :src="user.icon" @click="loginShow = !loginShow" class=" rounded-full"/>
     <uil:chat-bubble-user v-show="!icon_show" @click="loginShow = !loginShow" class="h-6 w-6 text-indigo-500" />
-    <div v-show="loginShow" v-loading="logloading" @mouseleave="loginShow = false"
+    <div v-show="loginShow" v-loading="logloading"
       class="w-full sm:w-max rounded-md bg-white bg-opacity-90 dark:bg-zinc-900 dark:bg-opacity-75 p-2 cursor-auto">
       <div class="login" v-show="!userloged">
         <div v-show="!logon_show">
@@ -56,7 +56,7 @@
               <div>
                 <input v-model="user.id" placeholder="用户ID" />
                 <br />
-                <input v-model="user.passwd" placeholder="用户密码" @keyup.enter="user_login" />
+                <input v-model="user.passwd" placeholder="用户密码" type="password" @keyup.enter="user_login" />
                 <br />
                 <span @click="user_login" style="cursor: pointer;">登录</span>
                 <span @click="logon_show = !logon_show" style="cursor: pointer;">注册</span>
@@ -69,7 +69,7 @@
           <br />
           <input type="text" v-model="userLogon.name" placeholder="用户名字" />
           <br />
-          <input type="text" v-model="userLogon.passwd" placeholder="用户密码" @keyup.enter="user_logon" />
+          <input type="password" v-model="userLogon.passwd" placeholder="用户密码" @keyup.enter="user_logon" />
           <br />
           <span @click="user_logon" style="cursor: pointer;">注册</span>
           <span @click="logon_show = !logon_show" style="cursor: pointer; margin:">取消</span>
@@ -333,7 +333,12 @@ export default {
     const user_add_face_error = () => {
       face_add_back();
     }
-    return { logloading, userloged, loginShow, logon_show, faceid_show, face_add_back_show, user, userLogon, FaceRecognitionComponent, admin_show, user_login, user_logon, user_logout, user_face_login, addFaceRecognition, openCapture, add_face_success, user_face_login_error, not_have_captrue, close_face_id, face_add_back, user_add_face_error, icon_show }
+    const clickNoDom = () => {
+      if (loginShow.value) {
+        loginShow.value = false;
+      }
+    }
+    return { logloading, userloged, loginShow, logon_show, faceid_show, face_add_back_show, user, userLogon, FaceRecognitionComponent, admin_show, user_login, user_logon, user_logout, user_face_login, addFaceRecognition, openCapture, add_face_success, user_face_login_error, not_have_captrue, close_face_id, face_add_back, user_add_face_error, icon_show, clickNoDom }
 
   }
 }
