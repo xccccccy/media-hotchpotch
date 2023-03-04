@@ -66,8 +66,4 @@ localStorage.removeItem("bookuser");
 a {
     text-decoration: none;
 }
-
-.app {
-    min-height: 100vh;
-}
 </style>
