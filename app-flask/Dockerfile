@@ -19,8 +19,8 @@ ARG HOST_UID
 #     rm -rf /var/lib/apt/lists/*
 
 # install dlib
-# COPY ./dependents/dlib-19.24.0-cp38-cp38-linux_aarch64.whl .
-# RUN python -m pip install ./dlib-19.24.0-cp38-cp38-linux_aarch64.whl && rm -rf ./dlib-19.24.0-cp38-cp38-linux_aarch64.whl
+COPY ./dependents/dlib-19.24.0-cp38-cp38-linux_x86_64.whl .
+RUN python -m pip install ./dlib-19.24.0-cp38-cp38-linux_x86_64.whl && rm -rf ./dlib-19.24.0-cp38-cp38-linux_x86_64.whl
 
 COPY requirements.txt .
 RUN python -m pip install --no-cache-dir -r requirements.txt  -i https://pypi.tuna.tsinghua.edu.cn/simple

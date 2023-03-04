@@ -4,30 +4,21 @@ import datetime
 
 from flask import current_app, make_response, request, Response, render_template, render_template_string, url_for, redirect, session
 from spider import spider
-# from face_recognize import face_recognize_component
 from database import dbop
 from mail.mail import generate_verification_code, send_message
 from .scm_router import initScmRoute
 from .cms_route import initCmsRoute
 from .video_route import initVideoRoute
+from .face_route import initFaceRoute
+from .config_route import initConfigRoute, config_dict
 
+_API = '/api'
 
 def init_route(app):
 
     with app.app_context():
         current_app.logger.info('- NET - Init Route.')
     app.secret_key = r'F12Zr47j\3yX R~X@H!jLwf/T'
-    _API = '/api'
-    _FACEAPI = '/faceapi'
-    config_dict = {}
-    if not os.path.exists('config/allconfig.json'):
-        with open('config/allconfigtemplate.json', 'r', encoding='utf-8') as f:
-            config_dict = json.load(f)
-        with open('config/allconfig.json', 'w', encoding='utf-8') as f:
-            json.dump(config_dict, f, indent=3)
-    else:
-        with open('config/allconfig.json', 'r', encoding='utf-8') as f:
-            config_dict = json.load(f)
 
     @app.route(_API + '/book/recommend', methods=['GET', 'POST'])
     def book_recommend():
@@ -81,45 +72,8 @@ def init_route(app):
             res = make_response(temp)
         else:
             res = make_response('NO', 500)
-        current_app.logger.info(
-            f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code}')
+        current_app.logger.info(f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code}')
         return res
-
-    # @app.route(_FACEAPI + '/facerecognition', methods=['GET', 'POST'])
-    # def api_face_recognize():  # 考虑同步问题
-    #     if not config_dict['openLogin']['if']:
-    #         return make_response({'res': False, 'context': '已经关闭登录功能！', 'type': False})
-    #     if not config_dict['openFacerecognize']['if']:
-    #         return make_response({'res': False, 'context': '已经关闭人脸登录功能！', 'type': False})
-    #     img_base64 = request.json['img_base64'].split(',')[1]
-    #     hasface, face_id = face_recognize_component.recognize(img_base64)
-    #     if not face_id:
-    #         res = Response(json.dumps(
-    #             {'res': False, 'hasface': hasface}), mimetype='application/json')
-    #     else:
-    #         user = dbop.queryUser(face_id)['user']
-    #         res = Response(json.dumps({'res': True, 'id': face_id, 'name': user['name'], 'icon':user['icon']}), mimetype='application/json')
-    #     face_id = face_id if face_id else 'None'
-    #     current_app.logger.info(
-    #         f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code} - {face_id}')
-    #     return res
-
-    # @app.route(_FACEAPI + '/addfacerecognition', methods=['GET', 'POST'])
-    # def api_add_face_recognize():  # 考虑同步问题
-    #     if not config_dict['openFacerecognize']['if']:
-    #         return make_response({'res': False, 'context': '已经关闭添加 FaceID 功能！', 'type': False})
-    #     img_base64s = request.json['img_base64s']
-    #     face_id = request.json['face_id']
-    #     if face_recognize_component.add_face_recognize(img_base64s, face_id):
-    #         dbop.updateUser(face_id, True)
-    #         res_add_face = True
-    #     else:
-    #         res_add_face = False
-    #     res = Response(json.dumps({'res': res_add_face}),
-    #                    mimetype='application/json')
-    #     current_app.logger.info(
-    #         f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code} - {face_id} - {res_add_face}')
-    #     return res
 
     @app.route(_API + '/insertuser', methods=['GET', 'POST'])
     def insertuser():
@@ -131,27 +85,22 @@ def init_route(app):
         _face_id = False
         res = Response(json.dumps(dbop.insertUser(
             _id, _name, _passwd, _face_id)), mimetype='application/json')
-        current_app.logger.info(
-            f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code} - {_id} - {_name}')
+        current_app.logger.info(f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code} - {_id} - {_name}')
         return res
 
     @app.route(_API + '/queryuser', methods=['GET', 'POST'])
     def queryuser():
         _id = request.json['id']
-        res = Response(json.dumps(dbop.queryUser(_id)),
-                       mimetype='application/json')
-        current_app.logger.info(
-            f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code} - {_id}')
+        res = Response(json.dumps(dbop.queryUser(_id)),  mimetype='application/json')
+        current_app.logger.info(f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code} - {_id}')
         return res
 
     @app.route(_API + '/updateuser', methods=['GET', 'POST'])
     def updateuser():
         _id = request.json['id']
         _face_id = request.json['faceid']
-        res = Response(json.dumps(dbop.updateUser(_id, _face_id)),
-                       mimetype='application/json')
-        current_app.logger.info(
-            f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code} - {_id}')
+        res = Response(json.dumps(dbop.updateUser(_id, _face_id)), mimetype='application/json')
+        current_app.logger.info(f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code} - {_id}')
         return res
 
     @app.route(_API + '/login', methods=['GET', 'POST'])
@@ -160,10 +109,8 @@ def init_route(app):
             return make_response({'res': False, 'context': '已经关闭登录功能！', 'type': False})
         _id = request.json['id']
         _passwd = request.json['passwd']
-        res = Response(json.dumps(dbop.userLogin(_id, _passwd)),
-                       mimetype='application/json')
-        current_app.logger.info(
-            f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code} - {_id}')
+        res = Response(json.dumps(dbop.userLogin(_id, _passwd)), mimetype='application/json')
+        current_app.logger.info(f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code} - {_id}')
         return res
 
     @app.route(_API + '/querybookshelf', methods=['GET', 'POST'])
@@ -171,8 +118,7 @@ def init_route(app):
         _id = request.json['id']
         res = Response(json.dumps(dbop.queryBookshelf(_id)),
                        mimetype='application/json')
-        current_app.logger.info(
-            f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code} - {_id}')
+        current_app.logger.info(f'- NET - {request.remote_addr} - {request.full_path} - {res.status_code} - {_id}')
         return res
 
     @app.route(_API + '/updatebookshelf', methods=['GET', 'POST'])
@@ -232,30 +178,17 @@ def init_route(app):
         res = make_response({'res': False, 'context': 'no session'})
         return res
 
-    @app.route(_API + '/updateconfig', methods=['GET', 'POST'])
-    def updateconfig():
-        try:
-            if session.get('admin') or session.get('token'):
-                new_all_config = request.json['newconfig']
-                config_dict.update(new_all_config)
-                with open('config/allconfig.json', 'w', encoding='utf-8') as f:
-                    json.dump(config_dict, f, indent=3)
-                res = make_response({'res': True})
-                return res
-        except Exception as r:
-            pass
-        res = make_response({'res': False, 'context': 'no session'})
-        return res
-
     @app.route(_API + '/rootredirect', methods=['GET', 'POST'])
     def rootredirect():
         return config_dict['rootredirect']['where']
 
     # -------------------------------------------------------------------------------------------------------- #
 
+    initConfigRoute(app)
     initScmRoute(app)
     initCmsRoute(app)
     initVideoRoute(app)
+    initFaceRoute(app)
 
     # -------------------------------------------------------------------------------------------------------- #
 
