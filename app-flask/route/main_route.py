@@ -9,7 +9,7 @@ from mail.mail import generate_verification_code, send_message
 from .scm_router import initScmRoute
 from .cms_route import initCmsRoute
 from .video_route import initVideoRoute
-from .face_route import initFaceRoute
+# from .face_route import initFaceRoute
 from .config_route import initConfigRoute, config_dict
 
 _API = '/api'
@@ -188,7 +188,7 @@ def init_route(app):
     initScmRoute(app)
     initCmsRoute(app)
     initVideoRoute(app)
-    initFaceRoute(app)
+    # initFaceRoute(app)
 
     # -------------------------------------------------------------------------------------------------------- #
 

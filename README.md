@@ -51,3 +51,9 @@ sudo yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 # github action del
 echo ${SSL_KEY} > nginx/xcya.key && echo ${SSL_PEM} > nginx/xcya.pem
+
+# open face recognize
+dlib==19.24.0
+face-recognition==1.3.0
+opencv-contrib-python-headless<=4.2
+Pillow==9.4.0
