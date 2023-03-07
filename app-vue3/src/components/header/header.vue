@@ -10,7 +10,7 @@
             <component v-for="(headerSetting, index) in rightHeaderSettings" :is="headers[headerSetting.type]" class="flex"
                 v-show="!headerSetting.hidden" :key="index" :headerSetting="headerSetting"></component>
             <DrakMode @darkModeChange="darkModeChange" class="mx-3 flex"></DrakMode>
-            <User @userLog="userLog" class="mx-3 flex"></User>
+            <User @userLog="userLog" class="ml-2 mr-4 flex"></User>
         </div>
     </div>
 </template>

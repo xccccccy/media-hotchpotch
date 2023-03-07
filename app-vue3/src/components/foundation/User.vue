@@ -1,10 +1,10 @@
 <template>
-  <div class="user-all" :class="{ headeractivate: loginShow }" style="margin-right: .6rem" v-clickOutSide="clickNoDom">
+  <div class="user-all" :class="{ headeractivate: loginShow }" v-clickOutSide="clickNoDom">
     <div class=" relative">
       <img v-show="icon_show" :src="user.icon" @click="loginShow = !loginShow" class=" rounded-full" />
       <UserIcon v-show="!icon_show" @click="loginShow = !loginShow" class="h-6 w-6"></UserIcon>
       <div v-show="loginShow" v-loading="logloading"
-        class=" absolute right-0 top-12 w-full sm:w-max rounded-md bg-white bg-opacity-90 dark:bg-zinc-900 dark:bg-opacity-75 p-2 cursor-auto">
+        class=" absolute right-0 top-12 rounded-md bg-white bg-opacity-90 dark:bg-zinc-900 dark:bg-opacity-75 p-2 cursor-auto">
         <div class="login" v-show="!userloged">
           <div v-show="!logon_show">
             <div>
