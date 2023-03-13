@@ -158,13 +158,6 @@ export default {
 .movie-item .detail .title {
     font-size: 1.3rem;
     font-weight: 600;
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    text-overflow: -o-ellipsis-lastline;
-    text-overflow: ellipsis;
-    word-break: break-word;
-    -webkit-line-clamp: 2;
 }
 
 .movie-item .detail .date,

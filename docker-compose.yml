@@ -5,7 +5,7 @@ services:
     image: nginx:1.21.6
     volumes:
       - ./nginx:/tmp/nginx
-    environment: 
+    environment:
       - FLASK_SERVER_ADDR=backend:5001
     command: /bin/bash -c "envsubst < /tmp/nginx/default.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'" 
     ports:
@@ -27,5 +27,27 @@ services:
     working_dir: /app
     volumes:
       - ./app-flask:/app
+  
+  music-api:
+    image: music-api-image
+    build:
+      context: ./music-api-php
+      dockerfile: ./Dockerfile
+    container_name: music_api_container
+    ports:
+      - 5002:80
+
+  nodejs-server:
+    image: nodejs-server-image
+    build:
+      context: ./nodejs-server
+      dockerfile: ./Dockerfile
+    environment:
+      - METING_SERVER_ADDR=http://music-api
+    container_name: nodejs_server_container
+    ports:
+      - 5003:3000
+    depends_on:
+      - music-api
   
 

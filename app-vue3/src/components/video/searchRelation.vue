@@ -23,7 +23,7 @@
         </div>
         <div class="list-title flex">
             <span v-html="search_info"></span>
-            <div @click="webOfficialSearch">官网资源搜索</div>
+            <div @click="webOfficialSearch" class="pl-10">官网资源搜索</div>
             <div class="flex cursor-pointer ml-auto items-center" @click="$emit('togglePanel')">
                 <span>播放器</span>
                 <ArrowRight class="h-4 px-2" />
@@ -165,7 +165,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, shallowRef, onUnmounted, watch, defineEmits, defineExpose } from 'vue'
+import { ref, reactive, onMounted, shallowRef, onUnmounted, watch } from 'vue'
 import { computed } from '@vue/reactivity'
 import { ArrowLeft, ArrowRight, ArrowDown, Search, Close } from '@element-plus/icons-vue'
 import axios from "axios";

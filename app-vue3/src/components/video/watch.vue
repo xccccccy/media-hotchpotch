@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <div class="app w-24/25 lg:w-10/12 xl:w-9/12 pt-14 sm:pt-16 text-left pb-14 mx-auto">
+        <div class="app w-24/25 lg:w-10/12 xl:w-9/12 pt-14 sm:pt-24 text-left pb-14 mx-auto">
             <div class="main">
                 <div v-show="videoStore.showing == 'search'">
                     <SearchRelation @togglePanel="togglePanel" ref="searchComponent"></SearchRelation>

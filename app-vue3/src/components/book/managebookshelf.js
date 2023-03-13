@@ -17,7 +17,7 @@ export const getBookShelf = async () => {
       if (localBookShelf[value]) {
         localBookShelf[value].catalogue_id = localBookShelf[value].catalogue_id > netBookShelf[value].catalogue_id ? localBookShelf[value].catalogue_id : netBookShelf[value].catalogue_id;
       } else {
-        localBookShelf[value] = localBookShelf[value];
+        localBookShelf[value] = netBookShelf[value];
       }
     })
     localStorage.bookshelf = JSON.stringify(localBookShelf);
